@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package newsite.repository;
 
-/**
- *
- * @author twviiala
- */
-public interface NewsRepository {
+import newsite.domain.News;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface NewsRepository extends JpaRepository<News, Long> {
     
 }
