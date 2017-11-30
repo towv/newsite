@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>News</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"></div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <h2>News articles</h2>
+
+        <div>
+            <ul>
+                <li th:each="n:${news}">
+                    <span  th:text="${n.header}">Header</span>
+                    <br/>
+                    <ul>
+                        <li th:each="w:${n.writers}" th:text="${w.name}"></li>
+                    </ul>
+                    <br/>
+                    <span  th:text="${n.lead}">Lead</span>
+                    <br/>
+                    <img th:src="@{/news/{id}/photo(id=${n.id})}" width="200"/>
+                    <br/>
+                    <span  th:text="${n.text}">text</span>
+                    <br/>
+                    <ul>
+                        <li th:each="c:${n.categories}" th:text="c.name"></li>
+                    </ul>
+                    <br/>
+                    <span>Published: </span>
+                    <span  th:text="${n.pDate}">Publishing date</span>
+
+                </li>
+
+            </ul>
+        </div>
+
+
+        <h2>Add new</h2>
+        
+        <label>"Writer(s)"</label>
+        <br/>
+        <select name="writers" form="newNews" multiple="true">
+            <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">Writer</option>
+        </select>
+
+        <form method="POST" th:action="@{/news}" enctype="multipart/form-data" id="newNews">
+            <input type="text" name="header" placeholder="header"/>
+            <input type="text" name="lead" placeholder="lead"/>
+            <input type="text" name="text" placeholder="text"/>
+            <input type="file" name="photo" id="photo"/>
+            <input type="submit" value="Add!"/>
+        </form>
+        <br/>
+        
+
+    </body>
+
+</html>
