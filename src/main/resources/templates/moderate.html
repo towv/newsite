@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Moderate</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"></div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <h2>Writers</h2>
+
+        <div>
+            <ul>
+                <li th:each="writer:${writers}" th:text="${writer.name}"></li>
+            </ul>
+        </div>
+
+
+        <h2>Add new writer</h2>
+
+        <form method="POST" th:action="@{/writers}">
+            <input type="text" name="name"/>
+            <input type="submit" value="Add"/>
+        </form>
+
+        <h2>Categories</h2>
+
+        <div>
+            <ul>
+                <li th:each="category:${categories}" th:text="${category.name}"></li>
+            </ul>
+        </div>
+
+
+        <h2>Add new category</h2>
+
+        <form method="POST" th:action="@{/categories}">
+            <input type="text" name="name"/>
+            <input type="submit" value="Add"/>
+        </form>
+
+        <h2>News articles</h2>
+
+        <div>
+            <ul>
+                <li th:each="anew:${news}">
+                    <label>Header:</label>
+                    <span  th:text="${anew.header}">Header</span>
+                    <br/>
+                    <label>Writers:</label>
+                    <ul>
+                        <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
+                    </ul>
+                    <br/>
+                    <label>Categories:</label>
+                    <ul>
+                        <li th:each="category:${anew.categories}" th:text="${category.name}"></li>
+                    </ul>
+                    <br/>
+                    <label>Lead:</label>
+                    <span  th:text="${anew.lead}">Lead</span>
+                    <br/>
+                    <label>Photos:</label>
+                    <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="200"/>
+                    <br/>
+                    <label>Article text</label>
+                    <span  th:text="${anew.text}">text</span>
+                    <br/>
+                    <label>Published:</label>
+                    <span th:text="${anew.pDate}">Publishing date</span>
+
+                </li>
+
+            </ul>
+        </div>
+
+
+        <h2>Add new news</h2>
+        
+        <select name="writers" form="newNews" multiple="true">
+            <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">Writer</option>
+        </select>
+        <br/>
+        <label>"Writer(s)"</label>
+        <br/>
+        
+        <select name="categories" form="newNews" multiple="true">
+            <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}">Category</option>
+        </select>
+        <label>Categories</label>
+        <br/>
+
+        <form method="POST" th:action="@{/news/moderate}" enctype="multipart/form-data" id="newNews">
+            <input type="text" name="header" placeholder="header"/>
+            <label>Header</label>
+            <br/>
+            <input type="text" name="lead" placeholder="lead"/>
+            <label>Lead</label>
+            <br/>
+            <textarea rows="10" cols="60" name="text"></textarea>
+            <label>Text</label>
+            <br/>
+            <input type="file" name="photo" id="photo"/>
+            <label>Photo</label>
+            <br/>
+            <input type="submit" value="Add!"/>
+        </form>
+        <br/>
+
+    </body>
+
+</html>

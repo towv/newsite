@@ -25,4 +25,6 @@ public class News extends AbstractPersistable<Long> {
     private List<Writer> writers = new ArrayList<>();
     @ManyToMany
     private List<Category> categories = new ArrayList<>();
+//    @OneToOne(mappedBy = "News")
+//    private Views timesViewed;
 }

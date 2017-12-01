@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>News</title>
+        <title>Article</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -13,20 +13,10 @@
         <br/>
         <br/>
         <br/>
-        
-        <form th:action="@{/news/{title}/listByDate(title=$title)}" method="get">
-            <input type="submit" value="List newest news"/>
-        </form>
-        
-        <form action="@{/news/{title}/listByViews(title=$title)}" method="get">
-            <input type="submit" value="List most viewed"/>
-        </form>
 
-        <h2>News articles in <span th:text="${title}"></span></h2>
+        <h2>News article</h2>
 
         <div>
-            <ul>
-                <li th:each="anew:${news}">
                     <label>Header:</label>
                     <span  th:text="${anew.header}">Header</span>
                     <br/>
@@ -51,11 +41,9 @@
                     <br/>
                     <label>Published:</label>
                     <span th:text="${anew.pDate}">Publishing date</span>
+        </div>
 
-                </li>
 
-            </ul>
-        </div>  
 
     </body>
 

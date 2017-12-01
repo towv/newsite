@@ -16,17 +16,17 @@ public class WriterController {
     @Autowired
     private WriterRepository writerRepository;
     
-    @GetMapping("/writers")
-    public String list(Model model) {
-        model.addAttribute("writers", writerRepository.findAll());
-        return "writers";
-    }
+//    @GetMapping("/writers")
+//    public String list(Model model) {
+//        model.addAttribute("writers", writerRepository.findAll());
+//        return "moderate";
+//    }
     
     @PostMapping("/writers")
     public String add(@RequestParam String name) {
         Writer writer = new Writer();
         writer.setName(name);
         writerRepository.save(writer);
-        return "redirect:/writers";
+        return "redirect:/moderate";
     }
 }
