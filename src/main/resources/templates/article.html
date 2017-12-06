@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
+
+
         <meta charset="UTF-8" />
         <title>Article</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
@@ -14,36 +16,37 @@
         <br/>
         <br/>
 
-        <h2>News article</h2>
+        <h2 th:text="${anew.header}"></h2>
 
         <div>
-                    <label>Header:</label>
-                    <span  th:text="${anew.header}">Header</span>
-                    <br/>
-                    <label>Writers:</label>
-                    <ul>
-                        <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
-                    </ul>
-                    <br/>
-                    <label>Categories:</label>
-                    <ul>
-                        <li th:each="category:${anew.categories}" th:text="${category.name}"></li>
-                    </ul>
-                    <br/>
-                    <label>Lead:</label>
-                    <span  th:text="${anew.lead}">Lead</span>
-                    <br/>
-                    <label>Photos:</label>
-                    <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="200"/>
-                    <br/>
-                    <label>Article text</label>
-                    <span  th:text="${anew.text}">text</span>
-                    <br/>
-                    <label>Published:</label>
-                    <span th:text="${anew.pDate}">Publishing date</span>
+            <label>Header:</label>
+            <span  th:text="${anew.header}">Header</span>
+            <br/>
+            <label>Writers:</label>
+            <ul>
+                <li th:each="writer:${anew.writers}" th:text="${writer.name}">Writers</li>
+            </ul>
+            <br/>
+            <label>Categories:</label>
+            <ul>
+                <li th:each="category:${anew.categories}" th:text="${category.name}">Categories</li>
+            </ul>
+            <br/>
+            <label>Lead:</label>
+            <span  th:text="${anew.lead}">Lead</span>
+            <br/>
+            <label>Photos:</label>
+            <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="200"/>
+            <br/>
+            <label>Article text</label>
+            <span  th:text="${anew.text}">text</span>
+            <br/>
+            <label>Published:</label>
+            <span th:text="${anew.pDate}">Publishing date</span>
         </div>
 
-
+        <div th:replace="fragments/footer :: footer">
+        </div>
 
     </body>
 

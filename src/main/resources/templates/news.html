@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
+
         <meta charset="UTF-8" />
         <title>News</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
@@ -13,14 +14,19 @@
         <br/>
         <br/>
         <br/>
-        
-        <form th:action="@{/news/{title}/listByDate(title=$title)}" method="get">
-            <input type="submit" value="List newest news"/>
+
+        <form th:action="@{/news/{title}/listByDate(title=${title})}" method="get">
+            <input type="submit" value="List 5 newest news in this category"/>
         </form>
-        
-        <form action="@{/news/{title}/listByViews(title=$title)}" method="get">
-            <input type="submit" value="List most viewed"/>
+
+        <form th:action="@{/news/{title}/listByViews(title=${title})}" method="get">
+            <input type="submit" value="List 5 most viewed in this category"/>
         </form>
+
+        <form th:action="@{/categories/{name}(name=${title})}" method="get">
+            <input type="submit" value="List all in this category"/>
+        </form>
+
 
         <h2>News articles in <span th:text="${title}"></span></h2>
 
@@ -55,7 +61,10 @@
                 </li>
 
             </ul>
-        </div>  
+        </div>
+
+        <div th:replace="fragments/footer :: footer">
+        </div>
 
     </body>
 

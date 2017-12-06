@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
+
+
         <meta charset="UTF-8" />
         <title>News</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
@@ -19,7 +21,7 @@
         <h2>Newest news!</h2>
 
         <div>
-            <ul>
+            <ol>
                 <li th:each="anew:${news}">
                     <label>Header:</label>
                     <a href="#" th:href="@{/news/{id}(id=${anew.id})}" th:text="${anew.header}">Header</a>
@@ -35,7 +37,10 @@
 
                 </li>
 
-            </ul>
+            </ol>
+        </div>
+
+        <div th:replace="fragments/footer :: footer">
         </div>
 
     </body>

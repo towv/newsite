@@ -2,6 +2,7 @@ package newsite.controller;
 
 import java.io.IOException;
 import java.util.List;
+import javax.transaction.Transactional;
 import newsite.domain.News;
 import newsite.domain.Photo;
 import newsite.repository.CategoryRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+@Transactional
 @Controller
 public class ModeratorController {
 
@@ -27,6 +29,8 @@ public class ModeratorController {
     private CategoryRepository categoryRepository;
     @Autowired
     private PhotoRepository photoRepository;
+//    @Autowired
+//    private ViewsRepository viewsRepository;
 
     @GetMapping("/moderate")
     public String list(Model model) {
@@ -41,9 +45,17 @@ public class ModeratorController {
             @RequestParam String text, @RequestParam List<Long> writers, @RequestParam List<Long> categories, @RequestParam("photo") MultipartFile photo) throws IOException {
 
         News news = new News();
+        newsRepository.save(news);
         news.setHeader(header);
         news.setLead(lead);
         news.setText(text);
+        news.setViews(0);
+//        Views views = new Views();
+//        views.setTimes(0);
+//        views.setNews(news);
+//        viewsRepository.save(views);
+//        
+//        news.setTimesViewed(views);
         
         for (Long writer : writers) {
             news.getWriters().add(writerRepository.getOne(writer));

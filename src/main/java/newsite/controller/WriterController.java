@@ -1,15 +1,15 @@
 
 package newsite.controller;
 
+import javax.transaction.Transactional;
 import newsite.domain.Writer;
 import newsite.repository.WriterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Transactional
 @Controller
 public class WriterController {
     

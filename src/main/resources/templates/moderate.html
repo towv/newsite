@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
+
         <meta charset="UTF-8" />
         <title>Moderate</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
@@ -83,14 +84,13 @@
 
 
         <h2>Add new news</h2>
-        
+
         <select name="writers" form="newNews" multiple="true">
             <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">Writer</option>
         </select>
-        <br/>
         <label>"Writer(s)"</label>
         <br/>
-        
+
         <select name="categories" form="newNews" multiple="true">
             <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}">Category</option>
         </select>
@@ -107,8 +107,8 @@
             <textarea rows="10" cols="60" name="text"></textarea>
             <label>Text</label>
             <br/>
-            <input type="file" name="photo" id="photo"/>
             <label>Photo</label>
+            <input type="file" name="photo" id="photo"/> 
             <br/>
             <input type="submit" value="Add!"/>
         </form>

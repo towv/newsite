@@ -21,10 +21,11 @@ public class News extends AbstractPersistable<Long> {
     private String lead;
     private Date pDate = new Date();
     private String text;
+    private Integer views;
     @ManyToMany
     private List<Writer> writers = new ArrayList<>();
     @ManyToMany
     private List<Category> categories = new ArrayList<>();
-//    @OneToOne(mappedBy = "News")
-//    private Views timesViewed;
+//    @OneToOne
+//    private Views views;
 }
