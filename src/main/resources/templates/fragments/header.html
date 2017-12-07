@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
+
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
@@ -20,10 +20,19 @@
                             <a href="#" th:href="@{/}">Home</a>
                         </li>
                         <li th:each="category:${categories}">
-                            <a href="#" th:href="@{/categories/{name}(name=${category.name})}" th:text="${category.name}">Category</a>
+                            <a href="#" th:href="@{/news/{title}/listByDate/1(title=${category.name})}" th:text="${category.name}">Category</a>
                         </li>
-                        <li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li th:if="${session.moderator}">
                             <a href="#" th:href="@{/moderate}">Moderate</a>
+                        </li>
+                        <li th:unless="${session.moderator}">
+                            <a href="#" th:href="@{/login}">Login</a>
+                        </li>
+
+                        <li th:if="${session.moderator}">
+                            <a href="#" th:href="@{/logout}">Logout</a>
                         </li>
                     </ul>
                 </div>

@@ -1,41 +1,43 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
     <head>
+
+
         <meta charset="UTF-8" />
-        <title>Modify writer</title>
+        <title>News</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
     </head>
     <body style="margin-left: 50px">
-        <div th:replace="fragments/header :: header"/>
+        <div th:replace="fragments/header :: header"></div>
         <br/>
         <br/>
         <br/>
         <br/>
-
         <div th:if="${messages}">
             <ul>
                 <li th:each="message:${messages}" th:text="${message}"/>
             </ul>
         </div>
+        
+        <div th:unless="${session.moderator}">
 
-        <div th:if="${session.moderator}">
+        <h2>Login here:</h2>
 
-
-            <form method="POST" th:action="@{/moderator/writers/{id}(id=${writer.id})}" id="modifyWriters">
-                <label>Name</label><br/>
-                <input style="text" name="name" th:value="${writer.name}"/><br/>
-                <input type="submit" value="Edit"/>
-            </form>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="username"/>
+            <input type="password" name="password" placeholder="password"/>
+            <input type="submit" value="Login"/>
+        </form>
         </div>
+        <div th:if="${session.moderator}">
+            <h2>Welcome!</h2>
+        </div>
+        
+
+
+
     </body>
 
 </html>

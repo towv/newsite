@@ -8,12 +8,20 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
-    <body>
+    <body style="margin-left: 50px">
         <div th:replace="fragments/header :: header"></div>
         <br/>
         <br/>
         <br/>
         <br/>
+
+        <div th:if="${messages}">
+            <ul>
+                <li th:each="message:${messages}" th:text="${message}"/>
+            </ul>
+        </div>
+        
+        <div th:if="${session.moderator}">
 
         <h2>Writers</h2>
 
@@ -74,7 +82,7 @@
                     <label>Header:</label>
                     <span  th:text="${anew.header}">Header</span>
                     <br/>
-                    <label>Writers:</label>
+<!--                    <label>Writers:</label>
                     <ul>
                         <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
                     </ul>
@@ -94,7 +102,7 @@
                     <span  th:text="${anew.text}">text</span>
                     <br/>
                     <label>Published:</label>
-                    <span th:text="${anew.pDate}">Publishing date</span>
+                    <span th:text="${anew.pDate}">Publishing date</span>-->
 
                     <form th:method="DELETE" th:action="@{/news/{id}(id=${anew.id})}">
                         <input type="submit" value="Delete"/>
@@ -140,6 +148,8 @@
             <input type="submit" value="Add!"/>
         </form>
         <br/>
+        
+        </div>
 
     </body>
 

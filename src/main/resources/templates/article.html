@@ -9,12 +9,17 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
-    <body>
+    <body style="margin-left: 450px">
         <div th:replace="fragments/header :: header"></div>
         <br/>
         <br/>
         <br/>
         <br/>
+        <div th:if="${messages}">
+            <ul>
+                <li th:each="message:${messages}" th:text="${message}"/>
+            </ul>
+        </div>
 
         <h2 th:text="${anew.header}"></h2>
 
@@ -33,13 +38,13 @@
             </ul>
             <br/>
             <label>Lead:</label>
-            <span  th:text="${anew.lead}">Lead</span>
+            <span th:text="${anew.lead}"> Lead</span>
             <br/>
             <label>Photos:</label>
             <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="400"/>
             <br/>
             <label>Article text</label>
-            <span  th:text="${anew.text}">text</span>
+            <p style="width: 500px; word-wrap:break-word" th:text="${anew.text}">text</p>
             <br/>
             <label>Published:</label>
             <span th:text="${anew.pDate}">Publishing date</span>

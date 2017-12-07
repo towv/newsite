@@ -28,4 +28,5 @@ public class News extends AbstractPersistable<Long> {
     private List<Category> categories = new ArrayList<>();
     @OneToMany(mappedBy = "news")
     private List<View> views = new ArrayList<>();
+    private int viewsLastWeek = 0;
 }

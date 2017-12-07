@@ -9,12 +9,17 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
-    <body>
+    <body style="margin-left: 450px">
         <div th:replace="fragments/header :: header"></div>
         <br/>
         <br/>
         <br/>
         <br/>
+        <div th:if="${messages}">
+            <ul>
+                <li th:each="message:${messages}" th:text="${message}"/>
+            </ul>
+        </div>
 
         <h2>Welcome to this new newsite featuring old news</h2>
 

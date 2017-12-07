@@ -9,25 +9,33 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     </head>
-    <body>
+    <body style="margin-left: 50px">
         <div th:replace="fragments/header :: header"/>
         <br/>
         <br/>
         <br/>
         <br/>
 
+        <div th:if="${messages}">
+            <ul>
+                <li th:each="message:${messages}" th:text="${message}"/>
+            </ul>
+        </div>
 
-        <form method="POST" th:action="@{/moderator/categories/{id}(id=${category.id})}" id="modifyCategories">
-            <label>Name</label><br/>
-            <input style="text" name="name" th:value="${category.name}"/><br/>
-            <input type="submit" value="Edit"/>
-        </form>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+        <div th:if="${session.moderator}">
 
 
+            <form method="POST" th:action="@{/moderator/categories/{id}(id=${category.id})}" id="modifyCategories">
+                <label>Name</label><br/>
+                <input style="text" name="name" th:value="${category.name}"/><br/>
+                <input type="submit" value="Edit"/>
+            </form>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+        </div>
     </body>
 
 </html>

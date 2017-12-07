@@ -2,36 +2,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
 
+
         <meta charset="UTF-8" />
         <title>News</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
-    <body>
+    <body style="margin-left: 450px">
         <div th:replace="fragments/header :: header"></div>
         <br/>
         <br/>
         <br/>
         <br/>
 
-        <form th:action="@{/news/{title}/listByDate(title=${title})}" method="get">
-            <input type="submit" value="List 5 newest news in this category"/>
+        <div th:if="${messages}">
+            <ul>
+                <li th:each="message:${messages}" th:text="${message}"/>
+            </ul>
+        </div>
+
+        <form th:action="@{/news/{title}/listByDate/{index}(title=${title}, index=${index})}" method="get">
+            <input type="submit" value="List newest news in this category"/>
         </form>
 
-        <form th:action="@{/news/{title}/listByViews(title=${title})}" method="get">
-            <input type="submit" value="List 5 most viewed in this category"/>
-        </form>
-
-        <form th:action="@{/categories/{name}(name=${title})}" method="get">
-            <input type="submit" value="List all in this category"/>
+        <form th:action="@{/news/{title}/listByViews/{index}(title=${title}, index=${index})}" method="get">
+            <input type="submit" value="List most viewed in this category"/>
         </form>
 
 
         <h2>News articles in <span th:text="${title}"></span></h2>
 
         <div>
-            <ul>
+            <ul>               
                 <li th:each="anew:${news}">
                     <label>Header:</label>
                     <a href="#" th:href="@{/news/{id}(id=${anew.id})}" th:text="${anew.header}">Header</a>
@@ -59,26 +62,46 @@
                     <span th:text="${anew.pDate}">Publishing date</span>
 
                 </li>
-
             </ul>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+        </div>
+        <div th:if="${listing}=='byDate'">
+            <form th:action="@{/news/{title}/listByDate/{index}(title=${title}, index=${index}+1)}" method="get">
+                <div th:if="${index}>1">
+                    <button type="submit" th:formaction="@{/news/{title}/listByDate/{index}(title=${title}, index=${index}-1)}">Previous 5</button>
+                </div>
+                <div th:if="${index}*5<${listSize}">
+                    <button type="submit">Next 5</button>
+                </div>
+            </form>
         </div>
 
+        <div th:if="${listing}=='byViews'">
+            <form th:action="@{/news/{title}/listByViews/{index}(title=${title}, index=${index}+1)}" method="get">
+                <div th:if="${index}>1">
+                    <button type="submit" th:formaction="@{/news/{title}/listByViews/{index}(title=${title}, index=${index}-1)}">Previous 5</button>
+                </div>
+                <div th:if="${index}*5<${listSize}">
+                    <button type="submit">Next 5</button>
+                </div>
+            </form>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
         <div th:replace="fragments/footer :: footer">
         </div>
 
