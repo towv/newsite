@@ -34,33 +34,49 @@
             <ul>
                 <li th:each="anew:${news}">
                     <label>Header:</label>
-                    <span  th:text="${anew.header}">Header</span>
+                    <a href="#" th:href="@{/news/{id}(id=${anew.id})}" th:text="${anew.header}">Header</a>
                     <br/>
-                    <label>Writers:</label>
-                    <ul>
-                        <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
-                    </ul>
-                    <br/>
-                    <label>Categories:</label>
-                    <ul>
-                        <li th:each="category:${anew.categories}" th:text="${category.name}"></li>
-                    </ul>
-                    <br/>
-                    <label>Lead:</label>
-                    <span  th:text="${anew.lead}">Lead</span>
-                    <br/>
-                    <label>Photos:</label>
-                    <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="200"/>
-                    <br/>
-                    <label>Article text</label>
-                    <span  th:text="${anew.text}">text</span>
-                    <br/>
+                    <!--                    <label>Writers:</label>
+                                        <ul>
+                                            <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
+                                        </ul>
+                                        <br/>
+                                        <label>Categories:</label>
+                                        <ul>
+                                            <li th:each="category:${anew.categories}" th:text="${category.name}"></li>
+                                        </ul>
+                                        <br/>
+                                        <label>Lead:</label>
+                                        <span  th:text="${anew.lead}">Lead</span>
+                                        <br/>
+                                        <label>Photos:</label>
+                                        <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="400"/>
+                                        <br/>
+                                        <label>Article text</label>
+                                        <span  th:text="${anew.text}">text</span>
+                                        <br/>-->
                     <label>Published:</label>
                     <span th:text="${anew.pDate}">Publishing date</span>
 
                 </li>
 
             </ul>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
 
         <div th:replace="fragments/footer :: footer">

@@ -6,6 +6,7 @@ import newsite.domain.Category;
 import newsite.domain.News;
 import newsite.repository.CategoryRepository;
 import newsite.repository.NewsRepository;
+import newsite.repository.ViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import newsite.domain.View;
 
 @Transactional
 @Controller
@@ -23,8 +25,8 @@ public class NewsController {
     private NewsRepository newsRepository;
     @Autowired
     private CategoryRepository categoryRepository;
-//    @Autowired
-//    private ViewsRepository viewsRepository;
+    @Autowired
+    private ViewRepository viewRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -40,12 +42,15 @@ public class NewsController {
     @GetMapping("/news/{id}")
     public String article(Model model, @PathVariable Long id) {
         News news = newsRepository.getOne(id);
-        news.setViews(news.getViews() + 1);
+//        news.setViews(news.getViews() + 1);
+//        newsRepository.save(news);
+
+        View view = new View();
+        view.setNews(news);
+        viewRepository.save(view);
+        news.getViews().add(view);
         newsRepository.save(news);
 
-//        Views views = news.getTimesViewed();
-//        views.setTimes(views.getTimes() + 1);
-//        viewsRepository.save(views);
         model.addAttribute("anew", news);
         
         addFooterHeaderData(model);
@@ -79,8 +84,8 @@ public class NewsController {
     public String listByViews(Model model, @PathVariable String title) {
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(categoryRepository.findByName(title));
-        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "views");
-        model.addAttribute("news", newsRepository.findByCategories(categories, pageable));
+        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "");
+        model.addAttribute("news", newsRepository.findByCategoriesAndViews(categories, pageable));
         model.addAttribute("title", title);
         
         addFooterHeaderData(model);

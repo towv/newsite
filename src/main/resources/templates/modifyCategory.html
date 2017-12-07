@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Modify category</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+
+        <form method="POST" th:action="@{/moderator/categories/{id}(id=${category.id})}" id="modifyCategories">
+            <label>Name</label><br/>
+            <input style="text" name="name" th:value="${category.name}"/><br/>
+            <input type="submit" value="Edit"/>
+        </form>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+
+    </body>
+
+</html>

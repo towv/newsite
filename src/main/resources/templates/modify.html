@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Modify news</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+
+        <form method="POST" th:action="@{/moderator/news/{id}(id=${anew.id})}" enctype="multipart/form-data" id="modifyNews">
+            <label>Header</label><br/>
+            <input style="text" name="header" th:value="${anew.header}"/><br/>
+            <label>Lead</label><br/>
+            <input style="text" name="lead" th:value="${anew.lead}"/><br/>
+            <label>Text</label><br/>
+            <textarea rows="10" cols="70" name="text" th:text="${anew.text}">The text</textarea><br/>
+            <label>Photo</label><br/>
+            <img th:src="@{/images/{id}(id=${anew.id})}" alt="No photo :(" width="400"/><br/>
+            <label>The photo can be replaced by adding a new photo: </label>
+            <input type="file" name="photo" id="photo"/><br/>
+
+
+
+
+            <label>Writers</label><br/>
+            <select name="writers" form="modifyNews" multiple="true">
+                <option th:each="writer:${writers}" th:value="${writer.id}" th:text="${writer.name}" th:selected="${anew.writers.contains(writer)}"></option>
+            </select><br/>
+            <label>Categories</label><br/>
+            <select name="categories" form="modifyNews" multiple="true">
+                <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${anew.categories.contains(category)}">name</option>
+            </select><br/><br/>
+            <input type="submit" value="Edit"/>
+        </form>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+
+    </body>
+
+</html>

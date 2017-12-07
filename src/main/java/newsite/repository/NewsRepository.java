@@ -1,4 +1,3 @@
-
 package newsite.repository;
 
 import java.util.ArrayList;
@@ -12,10 +11,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 public interface NewsRepository extends JpaRepository<News, Long> {
+
     List<News> findByCategories(List<Category> categories);
 
+    List<News> findByCategoriesAndViews(List<Category> categories, Pageable pageable);
+
     List<News> findByCategories(List<Category> categories, Pageable pageable);
-
-
 
 }

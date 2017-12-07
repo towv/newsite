@@ -19,7 +19,17 @@
 
         <div>
             <ul>
-                <li th:each="writer:${writers}" th:text="${writer.name}"></li>
+                <li th:each="writer:${writers}">
+                    <span th:text="${writer.name}"/>
+                    <form th:method="DELETE" th:action="@{/writers/{id}(id=${writer.id})}">
+                        <input type="submit" value="Delete"/>
+                    </form>
+
+                    <form th:method="GET" th:action="@{/writers/{id}/modify(id=${writer.id})}">
+                        <input type="submit" value="Edit"/>
+                    </form>
+                </li>
+
             </ul>
         </div>
 
@@ -35,7 +45,16 @@
 
         <div>
             <ul>
-                <li th:each="category:${categories}" th:text="${category.name}"></li>
+                <li th:each="category:${categories}">
+                    <span th:text="${category.name}"/>
+                    <form th:method="DELETE" th:action="@{/categories/{id}(id=${category.id})}">
+                        <input type="submit" value="Delete"/>
+                    </form>
+
+                    <form th:method="GET" th:action="@{/categories/{id}/modify(id=${category.id})}">
+                        <input type="submit" value="Edit"/>
+                    </form>
+                </li>
             </ul>
         </div>
 
@@ -76,6 +95,14 @@
                     <br/>
                     <label>Published:</label>
                     <span th:text="${anew.pDate}">Publishing date</span>
+
+                    <form th:method="DELETE" th:action="@{/news/{id}(id=${anew.id})}">
+                        <input type="submit" value="Delete"/>
+                    </form>
+
+                    <form th:method="GET" th:action="@{/news/{id}/modify(id=${anew.id})}">
+                        <input type="submit" value="Edit"/>
+                    </form>
 
                 </li>
 
