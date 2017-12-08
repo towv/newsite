@@ -19,115 +19,69 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import newsite.domain.View;
+import newsite.service.NewsService;
 
+/**
+ * News Controller for showing news pages.
+ * @author twviiala
+ */
 @Transactional
 @Controller
 public class NewsController {
 
     @Autowired
     private NewsRepository newsRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private ViewRepository viewRepository;
 
+    @Autowired
+    private NewsService newsService;
+
+    /**
+     * Return index page.
+     * @param model
+     * @return
+     */
     @GetMapping("/")
     public String index(Model model) {
-
-        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "pDate");
-        model.addAttribute("news", newsRepository.findAll(pageable));
-        addFooterHeaderData(model);
-
+        newsService.setModelIndex(model);
         return "index";
     }
 
+    /**
+     * Return a single news in detail.
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/news/{id}")
     public String article(Model model, @PathVariable Long id) {
-        News news = newsRepository.getOne(id);
-//        news.setViews(news.getViews() + 1);
-//        newsRepository.save(news);
-
-        View view = new View();
-        view.setNews(news);
-        viewRepository.save(view);
-        news.getViews().add(view);
-        newsRepository.save(news);
-
-        model.addAttribute("anew", news);
-
-        addFooterHeaderData(model);
+        newsService.setModelArticle(id, model);
         return "article";
     }
 
-//    @GetMapping("/categories/{name}")
-//    public String list(Model model, @PathVariable String name) {
-//        ArrayList<Category> categories = new ArrayList();
-//        categories.add(categoryRepository.findByName(name));
-//        model.addAttribute("news", newsRepository.findByCategories(categories));
-//        model.addAttribute("title", name);
-//        model.addAttribute("index", 1);
-//
-//        addFooterHeaderData(model);
-//        return "news";
-//    }
-    
+    /**
+     * List news based on publishing date.
+     * @param model
+     * @param title
+     * @param index
+     * @return
+     */
     @GetMapping("/news/{title}/listByDate/{index}")
     public String listByDate(Model model, @PathVariable String title, @PathVariable Integer index) {
-        ArrayList<Category> categories = new ArrayList<>();
-        categories.add(categoryRepository.findByName(title));
-        Pageable pageable = PageRequest.of(index - 1, 5, Sort.Direction.DESC, "pDate");
-        model.addAttribute("news", newsRepository.findByCategories(categories, pageable));
-        model.addAttribute("title", title);
-        model.addAttribute("listing", "byDate");
-        findListSize(model, title);
-
-        addFooterHeaderData(model);
+        newsService.setModelListByDate(title, index, model);
         return "news";
     }
 
+    /**
+     * List news based on views last week.
+     * @param model
+     * @param title
+     * @param index
+     * @return
+     */
     @GetMapping("/news/{title}/listByViews/{index}")
     public String listByViews(Model model, @PathVariable String title, @PathVariable Integer index) {
-        ArrayList<Category> categories = new ArrayList<>();
-        categories.add(categoryRepository.findByName(title));
-
-        // Setting newsLastWeek for News
-        List<News> news = newsRepository.findByCategories(categories);
-        setViewsForLastWeek(news);
-
-        Pageable pageable = PageRequest.of(index - 1, 5, Sort.Direction.DESC, "viewsLastWeek");
-        model.addAttribute("news", newsRepository.findByCategories(categories, pageable));
-        model.addAttribute("title", title);
-        model.addAttribute("listing", "byViews");
-        findListSize(model, title);
-
-        addFooterHeaderData(model);
+        newsService.setModelListByViews(title, index, model);
         return "news";
     }
 
-    private void addFooterHeaderData(Model model) {
-        Pageable published = PageRequest.of(0, 5, Sort.Direction.DESC, "pDate");
-        model.addAttribute("newsByDate", newsRepository.findAll(published));
-
-        List<News> news = newsRepository.findAll();
-        setViewsForLastWeek(news);
-        Pageable views = PageRequest.of(0, 5, Sort.Direction.DESC, "viewsLastWeek");
-        model.addAttribute("newsByViews", newsRepository.findAll(views));
-
-        model.addAttribute("categories", categoryRepository.findAll());
-    }
-
-    private void setViewsForLastWeek(List<News> news) {
-        for (News anew : news) {
-            anew.setViewsLastWeek(viewRepository.findByNewsAndWhenViewedAfter(anew, new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))).size());
-        }
-    }
-
-    private Model findListSize(Model model, String category) {
-
-        ArrayList<Category> categories = new ArrayList<>();
-        categories.add(categoryRepository.findByName(category));
-        model.addAttribute("listSize", categories.size());
-
-        return model;
-    }
 }

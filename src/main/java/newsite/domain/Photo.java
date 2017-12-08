@@ -11,6 +11,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/**
+ * Photo table.
+ * @author twviiala
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

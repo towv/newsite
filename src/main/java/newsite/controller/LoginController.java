@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import newsite.domain.Moderator;
 import newsite.repository.ModeratorRepository;
+import newsite.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,41 +13,57 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Login Controller.
+ * @author twviiala
+ */
 @Controller
 public class LoginController {
 
     @Autowired
-    private ModeratorRepository moderatorRepository;
+    private LoginService loginService;
 
+    /**
+     * Get login page.
+     * @return
+     */
     @GetMapping("/login")
     public String getLogin() {
-        if (moderatorRepository.findByName("moderator") == null) {
-            Moderator moderator = new Moderator();
-            moderator.theModerator(moderator);
-            moderatorRepository.save(moderator);
-        }
+
+        loginService.createModerator();
 
         return "login";
     }
 
+    /**
+     * Login to be able moderate news.
+     * @param model
+     * @param username
+     * @param password
+     * @param session
+     * @return
+     */
     @PostMapping("/login")
     public String login(Model model, @RequestParam String username, @RequestParam String password, HttpSession session) {
         List<String> messages = new ArrayList();
-        Moderator moderator = moderatorRepository.findByName(username);
-        if (moderator != null) {
-            if (moderator.getPassword().equals(password)) {
-                session.setAttribute("moderator", moderator);
-                messages.add("Logged in! You can now add and edit news :)");
-                model.addAttribute("messages", messages);
-                return "login";
-            }
+        if (loginService.attemptLogin(username, password, session)) {
+            messages.add("Logged in! You can now add and edit news :)");
+            model.addAttribute("messages", messages);
+            return "login";
         }
+
         messages.add("Wrong username or password!");
         model.addAttribute("messages", messages);
 
         return "login";
     }
 
+    /**
+     * Logout.
+     * @param model
+     * @param session
+     * @return
+     */
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session) {
         List<String> messages = new ArrayList();

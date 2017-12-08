@@ -9,6 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/**
+ * Category table.
+ * @author twviiala
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

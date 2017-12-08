@@ -8,30 +8,61 @@ import newsite.repository.WriterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * News validator.
+ * @author twviiala
+ */
 public class NewsValidator {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+//    private CategoryRepository categoryRepository;
+//
+//    private WriterRepository writerRepository;
+//
+//    private PhotoRepository photoRepository;
 
-    @Autowired
-    private WriterRepository writerRepository;
-
-    @Autowired
-    private PhotoRepository photoRepository;
+    /**
+     * Runs all news related validators in one method.
+     * 
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @param photo
+     * @param categoryRepository
+     * @param writerRepository
+     * @param photoRepository
+     * @return
+     */
 
     public List<String> validateNews(String header, String lead,
-            String text, List<Long> writers, List<Long> categories, MultipartFile photo) {
+            String text, List<Long> writers, List<Long> categories, MultipartFile photo, 
+            CategoryRepository categoryRepository, WriterRepository writerRepository, 
+            PhotoRepository photoRepository) {
+//        this.categoryRepository = categoryRepository;
+//        this.writerRepository = writerRepository;
+//        this.photoRepository = photoRepository;
         List<String> errors = new ArrayList<>();
         errors = validateHeader(errors, header);
         errors = validateLead(errors, lead);
         errors = validateText(errors, text);
-        errors = validateImage(errors, photo);
+        errors = validatePhoto(errors, photo);
         errors = validateWriters(errors, writers);
         errors = validateCategories(errors, categories);
 
         return errors;
     }
     
+    /**
+     * Validates news editing, the difference being no photo validator.
+     * You might want to keep the old photo.
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @return
+     */
     public List<String> validateEditNews(String header, String lead,
             String text, List<Long> writers, List<Long> categories) {
         List<String> errors = new ArrayList<>();
@@ -44,39 +75,67 @@ public class NewsValidator {
         return errors;
     }
 
+    /**
+     * Validates header.
+     * The length of it.
+     * @param errors
+     * @param header
+     * @return
+     */
     public List<String> validateHeader(List<String> errors, String header) {
         if (header.length() > 50) {
             errors.add("The header is too long, max 60 characters.");
         }
-        if (header.length() < 5) {
-            errors.add("The header is too short, minimum 5 characters");
+        if (header.length() < 3) {
+            errors.add("The header is too short, minimum 3 characters");
         }
         return errors;
     }
 
+    /**
+     * Validates lead.
+     * The length of it.
+     * @param errors
+     * @param lead
+     * @return
+     */
     public List<String> validateLead(List<String> errors, String lead) {
 
         if (lead.length() > 50) {
             errors.add("The lead is too long, max 60 characters.");
         }
-        if (lead.length() < 5) {
-            errors.add("The lead is too short, minimum 5 characters");
+        if (lead.length() < 3) {
+            errors.add("The lead is too short, minimum 3 characters");
         }
         return errors;
     }
 
+    /**
+     * Validates text.
+     * The length of it.
+     * @param errors
+     * @param text
+     * @return
+     */
     public List<String> validateText(List<String> errors, String text) {
 
         if (text.length() > 255) {
             errors.add("The text is too long, max 60 characters.");
         }
         if (text.length() < 5) {
-            errors.add("The text is too short, minimum 5 characters");
+            errors.add("The text is too short, minimum 3 characters");
         }
         return errors;
     }
 
-    public List<String> validateImage(List<String> errors, MultipartFile photo) {
+    /**
+     * Validates photo.
+     * All attributes.
+     * @param errors
+     * @param photo
+     * @return
+     */
+    public List<String> validatePhoto(List<String> errors, MultipartFile photo) {
 
         if (photo == null) {
             errors.add("You need to add a photo to the article.");
@@ -94,6 +153,13 @@ public class NewsValidator {
         return errors;
     }
 
+    /**
+     * Validates categories.
+     * You need to have one when creating news.
+     * @param errors
+     * @param categories
+     * @return
+     */
     public List<String> validateCategories(List<String> errors, List<Long> categories) {
         try {
             if (categories.isEmpty() || categories == null) {
@@ -115,6 +181,13 @@ public class NewsValidator {
         return errors;
     }
 
+    /**
+     * Validates writers.
+     * News are written by someone.
+     * @param errors
+     * @param writers
+     * @return
+     */
     public List<String> validateWriters(List<String> errors, List<Long> writers) {
 
         try {

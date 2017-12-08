@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import newsite.domain.Category;
-import newsite.domain.News;
 import newsite.repository.CategoryRepository;
 import newsite.repository.NewsRepository;
+import newsite.service.CategoryService;
+import newsite.validors.CategoryValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,60 +18,84 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Category Controller.
+ * @author twviiala
+ */
 @Transactional
 @Controller
 public class CategoryController {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
-    @Autowired
-    private NewsRepository newsRepository;
-    
+    /**
+     * Add new Category.
+     * @param redirectModel
+     * @param name
+     * @return
+     */
     @PostMapping("/categories")
     public String add(RedirectAttributes redirectModel, @RequestParam String name) {
-        Category category = new Category();
-        category.setName(name);
-        categoryRepository.save(category);
-        
-        List<String> messages = new ArrayList();
-        messages.add("There might be news about  " + category.getName() + "? hmmm...");
-        redirectModel.addFlashAttribute("messages", messages);
-        return "redirect:/moderate";
-    }
-
-    @DeleteMapping("/categories/{id}")
-    public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
-        Category category = categoryRepository.getOne(id);
-
-        for (News anew : category.getNews()) {
-            anew.getCategories().remove(category);
-            newsRepository.save(anew);
+        List<String> errors = categoryService.addCategory(name);
+        if (!errors.isEmpty()) {
+            redirectModel.addFlashAttribute("messages", errors);
+            return "redirect:/moderate";
         }
 
-        categoryRepository.delete(category);
-        
         List<String> messages = new ArrayList();
-        messages.add("Category " + category.getName() + " has been deleted.");
+        messages.add("There might be news about  " + name + "? hmmm...");
         redirectModel.addFlashAttribute("messages", messages);
         return "redirect:/moderate";
     }
 
+    /**
+     * Delete parameter Category.
+     * @param redirectModel
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/categories/{id}")
+    public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
+        String name = categoryService.deleteCategory(id);
+
+        List<String> messages = new ArrayList();
+        messages.add("Category " + name + " has been deleted.");
+        redirectModel.addFlashAttribute("messages", messages);
+        return "redirect:/moderate";
+    }
+
+    /**
+     * Get modify category page.
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/categories/{id}/modify")
     public String modify(Model model, @PathVariable Long id) {
-        model.addAttribute("category", categoryRepository.getOne(id));
+        categoryService.setModifyModel(model, id);
         return "modifyCategory";
     }
 
+    /**
+     * Modify id category by changing the name to name.
+     * @param redirectModel
+     * @param id
+     * @param name
+     * @return
+     */
     @PostMapping("/moderator/categories/{id}")
     public String postModify(RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam String name) {
-        Category category = categoryRepository.getOne(id);
-        category.setName(name);
-        categoryRepository.save(category);
-        
+        List<String> errors = categoryService.modifyCategory(name, id);
+        if (!errors.isEmpty()) {
+            redirectModel.addFlashAttribute("messages", errors);
+            return "redirect:/moderate";
+        }
+
         List<String> messages = new ArrayList();
-        messages.add("It seems  " + category.getName() + " is a new important news category.");
+        messages.add("It seems  " + name + " is a new important news category.");
         redirectModel.addFlashAttribute("messages", messages);
+
         return "redirect:/moderate";
     }
 }
