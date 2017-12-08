@@ -1,1 +1,5 @@
 language: java
+notifications:
+	email: false
+after_success:
+ - "bash <(curl -s https://codecov.io/bash) -t 49ccf274-8e18-4926-a7f0-6806c8aae84e"

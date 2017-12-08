@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModeratorService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.service</a> &gt; <span class="el_source">ModeratorService.java</span></div><h1>ModeratorService.java</h1><pre class="source lang-java linenums">package newsite.service;
+
+import java.io.IOException;
+import java.util.List;
+import newsite.controller.PhotoController;
+import newsite.domain.Category;
+import newsite.domain.News;
+import newsite.domain.Writer;
+import newsite.repository.CategoryRepository;
+import newsite.repository.NewsRepository;
+import newsite.repository.PhotoRepository;
+import newsite.repository.ViewRepository;
+import newsite.repository.WriterRepository;
+import newsite.validors.NewsValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * Moderator service.
+ * Services moderator controller.
+ * @author twviiala
+ */
+@Service
+<span class="fc" id="L26">public class ModeratorService {</span>
+
+    @Autowired
+    private NewsRepository newsRepository;
+    @Autowired
+    private WriterRepository writerRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private PhotoRepository photoRepository;
+    @Autowired
+    private PhotoService photoService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private WriterService writerService;
+    @Autowired
+    private NewsService newsService;
+
+<span class="fc" id="L45">    private NewsValidator newsValidator = new NewsValidator();</span>
+
+    /**
+     * Adds necessary items to model.
+     * @param model
+     */
+    public void setModelList(Model model) {
+<span class="fc" id="L52">        model.addAttribute(&quot;news&quot;, newsRepository.findAll());</span>
+<span class="fc" id="L53">        model.addAttribute(&quot;writers&quot;, writerRepository.findAll());</span>
+<span class="fc" id="L54">        model.addAttribute(&quot;categories&quot;, categoryRepository.findAll());</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Adds necessary items to model to modify one article.
+     * @param model
+     * @param id
+     */
+    public void setModifyModel(Model model, Long id) {
+<span class="fc" id="L63">        model.addAttribute(&quot;anew&quot;, newsRepository.getOne(id));</span>
+<span class="fc" id="L64">        model.addAttribute(&quot;writers&quot;, writerRepository.findAll());</span>
+<span class="fc" id="L65">        model.addAttribute(&quot;categories&quot;, categoryRepository.findAll());</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * Adds a new News.
+     * Otherwise if validators fail returns errors messages.
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @param photo
+     * @return
+     * @throws IOException
+     */
+    public List&lt;String&gt; addNews(String header, String lead, String text, List&lt;Long&gt; writers, List&lt;Long&gt; categories, MultipartFile photo) throws IOException {
+<span class="fc" id="L81">        List&lt;String&gt; errors = newsValidator.validateNews(header, lead, text, writers, categories, photo, categoryRepository, writerRepository, photoRepository);</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (!errors.isEmpty()) {</span>
+<span class="nc" id="L83">            return errors;</span>
+        }
+
+<span class="fc" id="L86">        News news = new News();</span>
+<span class="fc" id="L87">        newsRepository.save(news);</span>
+<span class="fc" id="L88">        news.setHeader(header);</span>
+<span class="fc" id="L89">        news.setLead(lead);</span>
+<span class="fc" id="L90">        news.setText(text);</span>
+
+<span class="fc" id="L92">        addWriterToNews(writers, news);</span>
+
+<span class="fc" id="L94">        addCategoryToNews(categories, news);</span>
+
+<span class="fc" id="L96">        newsRepository.save(news);</span>
+
+<span class="fc" id="L98">        photoService.createPhoto(photo, news);</span>
+
+<span class="fc" id="L100">        return errors;</span>
+    }
+
+    /**
+     * Modifies News item.
+     * @param id
+     * @param header
+     * @param lead
+     * @param photo
+     * @param text
+     * @param writers
+     * @param categories
+     * @return
+     * @throws IOException
+     */
+    public List&lt;String&gt; modifyNews(Long id, String header, String lead, MultipartFile photo, String text, List&lt;Long&gt; writers, List&lt;Long&gt; categories) throws IOException {
+<span class="fc" id="L116">        List&lt;String&gt; errors = newsValidator.validateEditNews(header, lead, text, writers, categories);</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (!errors.isEmpty()) {</span>
+<span class="nc" id="L118">            return errors;</span>
+        }
+
+<span class="fc" id="L121">        News anew = newsRepository.getOne(id);</span>
+<span class="fc" id="L122">        anew.setHeader(header);</span>
+<span class="fc" id="L123">        anew.setLead(lead);</span>
+<span class="fc" id="L124">        anew.setText(text);</span>
+
+<span class="fc" id="L126">        writerService.setWritersToNews(anew, writers);</span>
+
+<span class="fc" id="L128">        categoryService.setCategoriesToNews(anew, categories);</span>
+
+<span class="fc" id="L130">        newsRepository.save(anew);</span>
+
+<span class="fc" id="L132">        photoService.changePhoto(photo, anew);</span>
+<span class="fc" id="L133">        return errors;</span>
+    }
+
+    /**
+     * Deletes a news item.
+     * @param id
+     * @return
+     */
+    public String deleteNews(Long id) {
+<span class="fc" id="L142">        News anew = newsRepository.getOne(id);</span>
+
+<span class="fc" id="L144">        categoryService.removeNewsFromCategories(anew);</span>
+<span class="fc" id="L145">        writerService.removeNewsFromWriters(anew);</span>
+<span class="fc" id="L146">        newsService.removeNewsFromViews(anew);</span>
+
+<span class="fc" id="L148">        photoRepository.delete(photoRepository.findByNews(anew));</span>
+<span class="fc" id="L149">        newsRepository.delete(anew);</span>
+<span class="fc" id="L150">        return anew.getHeader();</span>
+    }
+
+    /**
+     * Adds a writer or writers to a news item.
+     * @param writers
+     * @param news
+     */
+    public void addWriterToNews(List&lt;Long&gt; writers, News news) {
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        for (Long longWriter : writers) {</span>
+<span class="fc" id="L160">            Writer writer = writerRepository.getOne(longWriter);</span>
+<span class="fc" id="L161">            news.getWriters().add(writer);</span>
+<span class="fc" id="L162">            writer.getNews().add(news);</span>
+<span class="fc" id="L163">            writerRepository.save(writer);</span>
+<span class="fc" id="L164">        }</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Adds a category or categories to a news item.
+     * @param categories
+     * @param news
+     */
+    public void addCategoryToNews(List&lt;Long&gt; categories, News news) {
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        for (Long longCategory : categories) {</span>
+<span class="fc" id="L174">            Category category = categoryRepository.getOne(longCategory);</span>
+<span class="fc" id="L175">            news.getCategories().add(category);</span>
+<span class="fc" id="L176">            category.getNews().add(news);</span>
+<span class="fc" id="L177">            categoryRepository.save(category);</span>
+<span class="fc" id="L178">        }</span>
+<span class="fc" id="L179">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

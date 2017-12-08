@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WriterValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.validors</a> &gt; <span class="el_source">WriterValidator.java</span></div><h1>WriterValidator.java</h1><pre class="source lang-java linenums">
+package newsite.validors;
+
+import java.util.ArrayList;
+import java.util.List;
+import newsite.domain.Writer;
+import newsite.repository.WriterRepository;
+
+/**
+ *
+ * @author twviiala
+ */
+<span class="fc" id="L13">public class WriterValidator {</span>
+    
+    private WriterRepository writerRepository;
+    private List&lt;Writer&gt; writers;
+    
+    /**
+     * Writer validator.
+     * Makes sure there are not too many writers. There can be.
+     * Makes sure that new writer is not created if an old one with the same name already exists.
+     * Checks the length of the writer name.
+     * @param name
+     * @param writerRepository
+     * @return
+     */
+    public List&lt;String&gt; validateWriter(String name, WriterRepository writerRepository) {
+<span class="fc" id="L28">        this.writerRepository = writerRepository;</span>
+<span class="fc" id="L29">        List&lt;String&gt; errors = new ArrayList();</span>
+
+<span class="fc" id="L31">        List&lt;Writer&gt; writers = writerRepository.findAll();</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (writers.size() &gt; 7) {</span>
+<span class="nc" id="L33">            errors.add(&quot;The maximum number of writers is 20, delete a writer to create a new one.&quot;);</span>
+        }
+<span class="pc bpc" id="L35" title="2 of 4 branches missed.">        if (name.trim().isEmpty() || name == null) {</span>
+<span class="nc" id="L36">            errors.add(&quot;Writer name cannot be empty.&quot;);</span>
+        }
+        try {
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">            if (writerRepository.findByName(name) != null) {</span>
+<span class="nc" id="L40">                errors.add(&quot;Writer with the given name already exists.&quot;);</span>
+            }
+<span class="nc" id="L42">        } catch (Exception e) {</span>
+<span class="fc" id="L43">        }</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (name.length() &gt; 15) {</span>
+<span class="nc" id="L45">            errors.add(&quot;Maximum length for writer name is 30 characters.&quot;);</span>
+        }
+<span class="fc" id="L47">        return errors;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

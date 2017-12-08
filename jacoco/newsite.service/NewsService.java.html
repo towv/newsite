@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NewsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.service</a> &gt; <span class="el_source">NewsService.java</span></div><h1>NewsService.java</h1><pre class="source lang-java linenums">package newsite.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import newsite.domain.Category;
+import newsite.domain.News;
+import newsite.domain.View;
+import newsite.repository.CategoryRepository;
+import newsite.repository.NewsRepository;
+import newsite.repository.ViewRepository;
+import newsite.repository.WriterRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+/**
+ * News service.
+ * Services News controller.
+ * @author twviiala
+ */
+@Service
+<span class="fc" id="L27">public class NewsService {</span>
+
+    @Autowired
+    private NewsRepository newsRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ViewRepository viewRepository;
+    
+    /**
+     * Sets index model.
+     * Also importantly header and footer data to be able to see lists of 
+     * News in the footer based on views and publishing date.
+     * @param model
+     */
+    public void setModelIndex(Model model) {
+<span class="fc" id="L43">        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, &quot;pDate&quot;);</span>
+<span class="fc" id="L44">        model.addAttribute(&quot;news&quot;, newsRepository.findAll(pageable));</span>
+<span class="fc" id="L45">        addFooterHeaderData(model);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Sets model article.
+     * For viewing a single news article.
+     * @param id
+     * @param model
+     */
+    public void setModelArticle(Long id, Model model) {
+<span class="fc" id="L55">        News news = newsRepository.getOne(id);</span>
+<span class="fc" id="L56">        addViewToNews(news);</span>
+<span class="fc" id="L57">        model.addAttribute(&quot;anew&quot;, news);</span>
+<span class="fc" id="L58">        addFooterHeaderData(model);</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Set model for list by date.
+     * @param title
+     * @param index
+     * @param model
+     */
+    public void setModelListByDate(String title, Integer index, Model model) {
+<span class="nc" id="L68">        ArrayList&lt;Category&gt; categories = getCategory(title);</span>
+<span class="nc" id="L69">        Pageable pageable = PageRequest.of(index - 1, 5, Sort.Direction.DESC, &quot;pDate&quot;);</span>
+<span class="nc" id="L70">        model.addAttribute(&quot;news&quot;, newsRepository.findByCategories(categories, pageable));</span>
+<span class="nc" id="L71">        model.addAttribute(&quot;title&quot;, title);</span>
+<span class="nc" id="L72">        model.addAttribute(&quot;listing&quot;, &quot;byDate&quot;);</span>
+<span class="nc" id="L73">        findListSize(model, title);</span>
+<span class="nc" id="L74">        addFooterHeaderData(model);</span>
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * Set model for list by views.
+     * @param title
+     * @param index
+     * @param model
+     */
+    public void setModelListByViews(String title, Integer index, Model model) {
+<span class="nc" id="L84">        ArrayList&lt;Category&gt; categories = getCategory(title);</span>
+
+<span class="nc" id="L86">        List&lt;News&gt; news = getCategoryRelatedNews(categories);</span>
+<span class="nc" id="L87">        setViewsForLastWeek(news);</span>
+
+<span class="nc" id="L89">        addViewsLastWeekToModel(index, model, categories);</span>
+<span class="nc" id="L90">        model.addAttribute(&quot;title&quot;, title);</span>
+<span class="nc" id="L91">        model.addAttribute(&quot;listing&quot;, &quot;byViews&quot;);</span>
+<span class="nc" id="L92">        findListSize(model, title);</span>
+
+<span class="nc" id="L94">        addFooterHeaderData(model);</span>
+<span class="nc" id="L95">    }</span>
+
+    /**
+     * Adds to model news based on views from last week.
+     * @param index
+     * @param model
+     * @param categories
+     */
+    public void addViewsLastWeekToModel(Integer index, Model model, ArrayList&lt;Category&gt; categories) {
+<span class="nc" id="L104">        Pageable pageable = PageRequest.of(index - 1, 5, Sort.Direction.DESC, &quot;viewsLastWeek&quot;);</span>
+<span class="nc" id="L105">        model.addAttribute(&quot;news&quot;, newsRepository.findByCategories(categories, pageable));</span>
+<span class="nc" id="L106">    }</span>
+
+    /**
+     * Finds news related to a certain category.
+     * @param categories
+     * @return
+     */
+    public List&lt;News&gt; getCategoryRelatedNews(ArrayList&lt;Category&gt; categories) {
+        // Setting newsLastWeek for News
+<span class="nc" id="L115">        List&lt;News&gt; news = newsRepository.findByCategories(categories);</span>
+<span class="nc" id="L116">        return news;</span>
+    }
+
+    /**
+     * Removes news from views.
+     * There is no seperate view service nor controller so this is handled here.
+     * @param anew
+     */
+    public void removeNewsFromViews(News anew) {
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        for (View vw : anew.getViews()) {</span>
+<span class="fc" id="L126">            View view = viewRepository.getOne(vw.getId());</span>
+<span class="fc" id="L127">            view.setNews(null);</span>
+<span class="fc" id="L128">            viewRepository.delete(view);</span>
+<span class="fc" id="L129">        }</span>
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Adds views to news.
+     * @param news
+     */
+    public void addViewToNews(News news) {
+<span class="fc" id="L137">        View view = new View();</span>
+<span class="fc" id="L138">        view.setNews(news);</span>
+<span class="fc" id="L139">        viewRepository.save(view);</span>
+<span class="fc" id="L140">        news.getViews().add(view);</span>
+<span class="fc" id="L141">        newsRepository.save(news);</span>
+<span class="fc" id="L142">    }</span>
+
+    /**
+     * Adds to model data necessary for model.
+     * @param model
+     */
+    public void addFooterHeaderData(Model model) {
+<span class="fc" id="L149">        Pageable published = PageRequest.of(0, 5, Sort.Direction.DESC, &quot;pDate&quot;);</span>
+<span class="fc" id="L150">        model.addAttribute(&quot;newsByDate&quot;, newsRepository.findAll(published));</span>
+
+<span class="fc" id="L152">        List&lt;News&gt; news = newsRepository.findAll();</span>
+<span class="fc" id="L153">        setViewsForLastWeek(news);</span>
+<span class="fc" id="L154">        Pageable views = PageRequest.of(0, 5, Sort.Direction.DESC, &quot;viewsLastWeek&quot;);</span>
+<span class="fc" id="L155">        model.addAttribute(&quot;newsByViews&quot;, newsRepository.findAll(views));</span>
+
+<span class="fc" id="L157">        model.addAttribute(&quot;categories&quot;, categoryRepository.findAll());</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Sets viewsLastWeek for News.
+     * This is done in order to sort based on last weeks views.
+     * @param news
+     */
+    public void setViewsForLastWeek(List&lt;News&gt; news) {
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        for (News anew : news) {</span>
+<span class="fc" id="L167">            anew.setViewsLastWeek(viewRepository.findByNewsAndWhenViewedAfter(anew, new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))).size());</span>
+<span class="fc" id="L168">        }</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Finds how many news are in the given category.
+     * @param model
+     * @param category
+     * @return
+     */
+    public Model findListSize(Model model, String category) {
+
+<span class="nc" id="L179">        ArrayList&lt;Category&gt; categories = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L180">        categories.add(categoryRepository.findByName(category));</span>
+<span class="nc" id="L181">        List&lt;News&gt; news = newsRepository.findByCategories(categories);</span>
+<span class="nc" id="L182">        model.addAttribute(&quot;listSize&quot;, news.size());</span>
+
+<span class="nc" id="L184">        return model;</span>
+    }
+
+    /**
+     * Returns the category with name title.
+     * Title is used here instead of name because name would otherwise have been disabled.
+     * @param title
+     * @return
+     */
+    public ArrayList&lt;Category&gt; getCategory(String title) {
+<span class="nc" id="L194">        ArrayList&lt;Category&gt; categories = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L195">        categories.add(categoryRepository.findByName(title));</span>
+<span class="nc" id="L196">        return categories;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

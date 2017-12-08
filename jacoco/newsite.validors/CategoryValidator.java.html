@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CategoryValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.validors</a> &gt; <span class="el_source">CategoryValidator.java</span></div><h1>CategoryValidator.java</h1><pre class="source lang-java linenums">package newsite.validors;
+
+import java.util.ArrayList;
+import java.util.List;
+import newsite.domain.Category;
+import newsite.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * Category validator.
+ * @author twviiala
+ */
+<span class="fc" id="L13">public class CategoryValidator {</span>
+
+    /**
+     * Validates that category is in the expected format.
+     * Makes sure there are not too many categories to make a mess of the site.
+     * Makes sure that new category is not created if an old one with the same name already exists.
+     * Checks the length of the category name.
+     * @param name
+     * @param categoryRepository
+     * @return
+     */
+    public List&lt;String&gt; validateCategories(String name, CategoryRepository categoryRepository) {
+<span class="fc" id="L25">        List&lt;String&gt; errors = new ArrayList();</span>
+
+<span class="fc" id="L27">        List&lt;Category&gt; categories = categoryRepository.findAll();</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if (categories.size() &gt; 7) {</span>
+<span class="nc" id="L29">            errors.add(&quot;The maximum number of categories is 7, delete a category to create a new one.&quot;);</span>
+        }
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">        if (name.trim().isEmpty() || name == null) {</span>
+<span class="nc" id="L32">            errors.add(&quot;Category name cannot be empty.&quot;);</span>
+        }
+        try {
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            if (categoryRepository.findByName(name) != null) {</span>
+<span class="fc" id="L36">                errors.add(&quot;Category with the given name already exists.&quot;);</span>
+            }
+<span class="nc" id="L38">        } catch (Exception e) {</span>
+<span class="fc" id="L39">        }</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (name.length() &gt; 15) {</span>
+<span class="nc" id="L41">            errors.add(&quot;Maximum length for category name is 15 characters.&quot;);</span>
+        }
+<span class="fc" id="L43">        return errors;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

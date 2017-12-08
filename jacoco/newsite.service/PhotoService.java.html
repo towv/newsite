@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PhotoService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.service</a> &gt; <span class="el_source">PhotoService.java</span></div><h1>PhotoService.java</h1><pre class="source lang-java linenums">package newsite.service;
+
+import java.io.IOException;
+import newsite.domain.News;
+import newsite.domain.Photo;
+import newsite.repository.NewsRepository;
+import newsite.repository.PhotoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * Photo service.
+ * Services.
+ * @author twviiala
+ */
+@Service
+<span class="fc" id="L18">public class PhotoService {</span>
+
+    @Autowired
+    private PhotoRepository photoRepository;
+    
+    @Autowired
+    private NewsRepository newsRepository;
+    
+    /**
+     * Returns the photo that is linked to id news.
+     * @param id
+     * @return
+     */
+    public byte[] getPhoto(Long id) {
+<span class="nc" id="L32">        return photoRepository.findByNews(newsRepository.getOne(id)).getContent();</span>
+    }
+
+    /**
+     * Change the photo related to a News article.
+     * @param photo
+     * @param anew
+     * @throws IOException
+     */
+    public void changePhoto(MultipartFile photo, News anew) throws IOException {
+<span class="pc bpc" id="L42" title="2 of 4 branches missed.">        if (photo != null &amp;&amp; !photo.isEmpty()) {</span>
+<span class="fc" id="L43">            Photo old = photoRepository.findByNews(anew);</span>
+<span class="fc" id="L44">            Photo newPhoto = new Photo();</span>
+
+<span class="fc" id="L46">            newPhoto.setName(photo.getOriginalFilename());</span>
+<span class="fc" id="L47">            newPhoto.setContent(photo.getBytes());</span>
+<span class="fc" id="L48">            newPhoto.setContentLength(photo.getSize());</span>
+<span class="fc" id="L49">            newPhoto.setContentType(photo.getContentType());</span>
+
+<span class="fc" id="L51">            newPhoto.setNews(anew);</span>
+<span class="fc" id="L52">            photoRepository.save(newPhoto);</span>
+<span class="fc" id="L53">            photoRepository.delete(old);</span>
+        }
+<span class="fc" id="L55">    }</span>
+    
+    /**
+     * Creates a photo for a news article.
+     * @param photo
+     * @param news
+     * @throws IOException
+     */
+    public void createPhoto(MultipartFile photo, News news) throws IOException  {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (photo.getContentType().equals(&quot;image/jpeg&quot;)) {</span>
+<span class="nc" id="L65">            Photo p = new Photo();</span>
+<span class="nc" id="L66">            p.setName(photo.getOriginalFilename());</span>
+<span class="nc" id="L67">            p.setContentLength(photo.getSize());</span>
+<span class="nc" id="L68">            p.setContent(photo.getBytes());</span>
+<span class="nc" id="L69">            p.setContentType(photo.getContentType());</span>
+<span class="nc" id="L70">            p.setNews(news);</span>
+<span class="nc" id="L71">            photoRepository.save(p);</span>
+        }
+<span class="fc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModeratorController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.controller</a> &gt; <span class="el_source">ModeratorController.java</span></div><h1>ModeratorController.java</h1><pre class="source lang-java linenums">package newsite.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.transaction.Transactional;
+import newsite.repository.CategoryRepository;
+import newsite.repository.NewsRepository;
+import newsite.repository.PhotoRepository;
+import newsite.repository.ViewRepository;
+import newsite.repository.WriterRepository;
+import newsite.service.CategoryService;
+import newsite.service.ModeratorService;
+import newsite.service.NewsService;
+import newsite.service.PhotoService;
+import newsite.service.WriterService;
+import newsite.validors.NewsValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+/**
+ * Moderator controller for moderating News.
+ * @author twviiala
+ */
+@Transactional
+@Controller
+<span class="fc" id="L35">public class ModeratorController {</span>
+
+    @Autowired
+    private ModeratorService moderatorService;
+
+    /**
+     * Get moderate page.
+     * @param model
+     * @return
+     */
+    @GetMapping(&quot;/moderate&quot;)
+    public String list(Model model) {
+<span class="nc" id="L47">        moderatorService.setModelList(model);</span>
+<span class="nc" id="L48">        return &quot;moderate&quot;;</span>
+    }
+
+    /**
+     * Add new News.
+     * @param redirectModel
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @param photo
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(&quot;/news/moderate&quot;)
+    public String postAdd(RedirectAttributes redirectModel, @RequestParam(value = &quot;header&quot;, required = false) String header, @RequestParam(value = &quot;lead&quot;, required = false) String lead,
+            @RequestParam(value = &quot;text&quot;, required = false) String text, @RequestParam(value = &quot;writers&quot;, required = false) List&lt;Long&gt; writers,
+            @RequestParam(value = &quot;categories&quot;, required = false) List&lt;Long&gt; categories, @RequestParam(value = &quot;photo&quot;, required = false) MultipartFile photo) throws IOException {
+
+<span class="nc" id="L68">        List&lt;String&gt; errors = moderatorService.addNews(header, lead, text, writers, categories, photo);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (!errors.isEmpty()) {</span>
+<span class="nc" id="L70">            redirectModel.addFlashAttribute(&quot;messages&quot;, errors);</span>
+<span class="nc" id="L71">            return &quot;redirect:/moderate&quot;;</span>
+        }
+
+<span class="nc" id="L74">        List&lt;String&gt; messages = new ArrayList();</span>
+<span class="nc" id="L75">        messages.add(&quot;New news created! Did you know &quot; + header + &quot;.&quot;);</span>
+<span class="nc" id="L76">        redirectModel.addFlashAttribute(&quot;messages&quot;, messages);</span>
+
+<span class="nc" id="L78">        return &quot;redirect:/moderate&quot;;</span>
+    }
+
+    /**
+     * Delete parameter News.
+     * @param redirectModel
+     * @param id
+     * @return
+     */
+    @DeleteMapping(&quot;/news/{id}&quot;)
+    public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
+<span class="nc" id="L89">        String header = moderatorService.deleteNews(id);</span>
+
+<span class="nc" id="L91">        List&lt;String&gt; messages = new ArrayList();</span>
+<span class="nc" id="L92">        messages.add(&quot;News have been deleted! It seems forgotton that &quot; + header + &quot;.&quot;);</span>
+<span class="nc" id="L93">        redirectModel.addFlashAttribute(&quot;messages&quot;, messages);</span>
+
+<span class="nc" id="L95">        return &quot;redirect:/moderate&quot;;</span>
+    }
+
+    /**
+     * Get modifying page, parameter id News.
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/news/{id}/modify&quot;)
+    public String modify(Model model, @PathVariable Long id) {
+<span class="nc" id="L106">        moderatorService.setModifyModel(model, id);</span>
+<span class="nc" id="L107">        return &quot;modify&quot;;</span>
+    }
+
+    /**
+     * Modify parameter id news with other parameters.
+     * @param redirectModel
+     * @param id
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @param photo
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(&quot;/moderator/news/{id}&quot;)
+    public String postModify(RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam(value = &quot;header&quot;, required = false) String header, @RequestParam(value = &quot;lead&quot;, required = false) String lead,
+            @RequestParam(value = &quot;text&quot;, required = false) String text, @RequestParam(value = &quot;writers&quot;, required = false) List&lt;Long&gt; writers,
+            @RequestParam(value = &quot;categories&quot;, required = false) List&lt;Long&gt; categories, @RequestParam(value = &quot;photo&quot;, required = false) MultipartFile photo) throws IOException {
+<span class="nc" id="L127">        List&lt;String&gt; errors = moderatorService.modifyNews(id, header, lead, photo, text, writers, categories);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (!errors.isEmpty()) {</span>
+<span class="nc" id="L129">            redirectModel.addFlashAttribute(&quot;messages&quot;, errors);</span>
+<span class="nc" id="L130">            return &quot;redirect:/moderate&quot;;</span>
+        }
+
+<span class="nc" id="L133">        List&lt;String&gt; messages = new ArrayList();</span>
+<span class="nc" id="L134">        messages.add(&quot;News have been edited successfully! It turns out that &quot; + header + &quot;.&quot;);</span>
+<span class="nc" id="L135">        redirectModel.addFlashAttribute(&quot;messages&quot;, messages);</span>
+
+<span class="nc" id="L137">        return &quot;redirect:/moderate&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NewsValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.validors</a> &gt; <span class="el_source">NewsValidator.java</span></div><h1>NewsValidator.java</h1><pre class="source lang-java linenums">package newsite.validors;
+
+import java.util.ArrayList;
+import java.util.List;
+import newsite.repository.CategoryRepository;
+import newsite.repository.PhotoRepository;
+import newsite.repository.WriterRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * News validator.
+ * @author twviiala
+ */
+<span class="fc" id="L15">public class NewsValidator {</span>
+
+//    private CategoryRepository categoryRepository;
+//
+//    private WriterRepository writerRepository;
+//
+//    private PhotoRepository photoRepository;
+
+    /**
+     * Runs all news related validators in one method.
+     * 
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @param photo
+     * @param categoryRepository
+     * @param writerRepository
+     * @param photoRepository
+     * @return
+     */
+
+    public List&lt;String&gt; validateNews(String header, String lead,
+            String text, List&lt;Long&gt; writers, List&lt;Long&gt; categories, MultipartFile photo, 
+            CategoryRepository categoryRepository, WriterRepository writerRepository, 
+            PhotoRepository photoRepository) {
+//        this.categoryRepository = categoryRepository;
+//        this.writerRepository = writerRepository;
+//        this.photoRepository = photoRepository;
+<span class="fc" id="L45">        List&lt;String&gt; errors = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L46">        errors = validateHeader(errors, header);</span>
+<span class="fc" id="L47">        errors = validateLead(errors, lead);</span>
+<span class="fc" id="L48">        errors = validateText(errors, text);</span>
+<span class="fc" id="L49">        errors = validatePhoto(errors, photo);</span>
+<span class="fc" id="L50">        errors = validateWriters(errors, writers);</span>
+<span class="fc" id="L51">        errors = validateCategories(errors, categories);</span>
+
+<span class="fc" id="L53">        return errors;</span>
+    }
+    
+    /**
+     * Validates news editing, the difference being no photo validator.
+     * You might want to keep the old photo.
+     * @param header
+     * @param lead
+     * @param text
+     * @param writers
+     * @param categories
+     * @return
+     */
+    public List&lt;String&gt; validateEditNews(String header, String lead,
+            String text, List&lt;Long&gt; writers, List&lt;Long&gt; categories) {
+<span class="fc" id="L68">        List&lt;String&gt; errors = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L69">        errors = validateHeader(errors, header);</span>
+<span class="fc" id="L70">        errors = validateLead(errors, lead);</span>
+<span class="fc" id="L71">        errors = validateText(errors, text);</span>
+<span class="fc" id="L72">        errors = validateWriters(errors, writers);</span>
+<span class="fc" id="L73">        errors = validateCategories(errors, categories);</span>
+
+<span class="fc" id="L75">        return errors;</span>
+    }
+
+    /**
+     * Validates header.
+     * The length of it.
+     * @param errors
+     * @param header
+     * @return
+     */
+    public List&lt;String&gt; validateHeader(List&lt;String&gt; errors, String header) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (header.length() &gt; 50) {</span>
+<span class="fc" id="L87">            errors.add(&quot;The header is too long, max 60 characters.&quot;);</span>
+        }
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (header.length() &lt; 3) {</span>
+<span class="fc" id="L90">            errors.add(&quot;The header is too short, minimum 3 characters&quot;);</span>
+        }
+<span class="fc" id="L92">        return errors;</span>
+    }
+
+    /**
+     * Validates lead.
+     * The length of it.
+     * @param errors
+     * @param lead
+     * @return
+     */
+    public List&lt;String&gt; validateLead(List&lt;String&gt; errors, String lead) {
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (lead.length() &gt; 50) {</span>
+<span class="fc" id="L105">            errors.add(&quot;The lead is too long, max 60 characters.&quot;);</span>
+        }
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (lead.length() &lt; 3) {</span>
+<span class="fc" id="L108">            errors.add(&quot;The lead is too short, minimum 3 characters&quot;);</span>
+        }
+<span class="fc" id="L110">        return errors;</span>
+    }
+
+    /**
+     * Validates text.
+     * The length of it.
+     * @param errors
+     * @param text
+     * @return
+     */
+    public List&lt;String&gt; validateText(List&lt;String&gt; errors, String text) {
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (text.length() &gt; 255) {</span>
+<span class="fc" id="L123">            errors.add(&quot;The text is too long, max 60 characters.&quot;);</span>
+        }
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (text.length() &lt; 5) {</span>
+<span class="fc" id="L126">            errors.add(&quot;The text is too short, minimum 3 characters&quot;);</span>
+        }
+<span class="fc" id="L128">        return errors;</span>
+    }
+
+    /**
+     * Validates photo.
+     * All attributes.
+     * @param errors
+     * @param photo
+     * @return
+     */
+    public List&lt;String&gt; validatePhoto(List&lt;String&gt; errors, MultipartFile photo) {
+
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (photo == null) {</span>
+<span class="nc" id="L141">            errors.add(&quot;You need to add a photo to the article.&quot;);</span>
+        }
+<span class="pc bpc" id="L143" title="3 of 4 branches missed.">        if (photo.getContentType().toString().equals(&quot;jpeg&quot;) &amp;&amp; photo.getContentType().toString().equals(&quot;image/jpg&quot;)</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">                &amp;&amp; photo.getContentType().toString().equals(&quot;image&quot;) &amp;&amp; photo.getContentType().toString().equals(&quot;image/jpeg&quot;)) {</span>
+<span class="nc" id="L145">            errors.add(&quot;The image is in wrong format&quot;);</span>
+        }
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (photo.getSize() &gt; 1048576) {</span>
+<span class="nc" id="L148">            errors.add(&quot;Photo is too big, maximum size 1 mb&quot;);</span>
+        }
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (photo.getOriginalFilename().isEmpty()) {</span>
+<span class="nc" id="L151">            errors.add(&quot;Photo does not have a name. :(&quot;);</span>
+        }
+<span class="fc" id="L153">        return errors;</span>
+    }
+
+    /**
+     * Validates categories.
+     * You need to have one when creating news.
+     * @param errors
+     * @param categories
+     * @return
+     */
+    public List&lt;String&gt; validateCategories(List&lt;String&gt; errors, List&lt;Long&gt; categories) {
+        try {
+<span class="pc bpc" id="L165" title="1 of 4 branches missed.">            if (categories.isEmpty() || categories == null) {</span>
+<span class="fc" id="L166">                errors.add(&quot;Select one or more categories for the article.&quot;);</span>
+            }
+<span class="fc" id="L168">        } catch (Exception i) {</span>
+<span class="fc" id="L169">            errors.add(&quot;Select one or more categories for the article.&quot;);</span>
+<span class="fc" id="L170">        }</span>
+//        try {
+//            for (Long category : categories) {
+//
+//                categoryRepository.getOne(category);
+//                errors.add(&quot;Select an existing category.&quot;);
+//            }
+//        } catch (Exception e) {
+//            errors.add(&quot;Select an existing category.&quot;);
+//        }
+
+<span class="fc" id="L181">        return errors;</span>
+    }
+
+    /**
+     * Validates writers.
+     * News are written by someone.
+     * @param errors
+     * @param writers
+     * @return
+     */
+    public List&lt;String&gt; validateWriters(List&lt;String&gt; errors, List&lt;Long&gt; writers) {
+
+        try {
+<span class="pc bpc" id="L194" title="1 of 4 branches missed.">            if (writers.isEmpty() || writers == null) {</span>
+<span class="fc" id="L195">                errors.add(&quot;Select one or more writers for the article.&quot;);</span>
+            }
+<span class="fc" id="L197">        } catch (Exception e) {</span>
+<span class="fc" id="L198">            errors.add(&quot;Select one or more writers for the article.&quot;);</span>
+<span class="fc" id="L199">        }</span>
+
+//        try {
+//            for (Long writer : writers) {
+//
+//                writerRepository.getOne(writer);
+//                errors.add(&quot;Select an existing writer.&quot;);
+//            }
+//        } catch (Exception i) {
+//            errors.add(&quot;Select an existing writer.&quot;);
+//        }
+
+<span class="fc" id="L211">        return errors;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NewsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Newsite</a> &gt; <a href="index.source.html" class="el_package">newsite.controller</a> &gt; <span class="el_source">NewsController.java</span></div><h1>NewsController.java</h1><pre class="source lang-java linenums">package newsite.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import javax.transaction.Transactional;
+import newsite.domain.Category;
+import newsite.domain.News;
+import newsite.repository.CategoryRepository;
+import newsite.repository.NewsRepository;
+import newsite.repository.ViewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import newsite.domain.View;
+import newsite.service.NewsService;
+
+/**
+ * News Controller for showing news pages.
+ * @author twviiala
+ */
+@Transactional
+@Controller
+<span class="fc" id="L30">public class NewsController {</span>
+
+    @Autowired
+    private NewsRepository newsRepository;
+
+    @Autowired
+    private NewsService newsService;
+
+    /**
+     * Return index page.
+     * @param model
+     * @return
+     */
+    @GetMapping(&quot;/&quot;)
+    public String index(Model model) {
+<span class="nc" id="L45">        newsService.setModelIndex(model);</span>
+<span class="nc" id="L46">        return &quot;index&quot;;</span>
+    }
+
+    /**
+     * Return a single news in detail.
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/news/{id}&quot;)
+    public String article(Model model, @PathVariable Long id) {
+<span class="nc" id="L57">        newsService.setModelArticle(id, model);</span>
+<span class="nc" id="L58">        return &quot;article&quot;;</span>
+    }
+
+    /**
+     * List news based on publishing date.
+     * @param model
+     * @param title
+     * @param index
+     * @return
+     */
+    @GetMapping(&quot;/news/{title}/listByDate/{index}&quot;)
+    public String listByDate(Model model, @PathVariable String title, @PathVariable Integer index) {
+<span class="nc" id="L70">        newsService.setModelListByDate(title, index, model);</span>
+<span class="nc" id="L71">        return &quot;news&quot;;</span>
+    }
+
+    /**
+     * List news based on views last week.
+     * @param model
+     * @param title
+     * @param index
+     * @return
+     */
+    @GetMapping(&quot;/news/{title}/listByViews/{index}&quot;)
+    public String listByViews(Model model, @PathVariable String title, @PathVariable Integer index) {
+<span class="nc" id="L83">        newsService.setModelListByViews(title, index, model);</span>
+<span class="nc" id="L84">        return &quot;news&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
