@@ -6,6 +6,7 @@ Yleisiä linkkejä:
 * [Linkki sovellukseeni](https://newnewsite.herokuapp.com/)
 * [Linkki dokumentaatiooni](documentation/dokumentaatio.pdf)
 * [Linkki javadoc](apidocs/index.html)
+(https://htmlpreview.github.io/?https://github.com/towv/newsite/blob/master/apidocs/help-doc.html)
 
 ## Travis
 [![Build Status](https://travis-ci.org/towv/newsite.svg?branch=master)](https://travis-ci.org/towv/newsite)
