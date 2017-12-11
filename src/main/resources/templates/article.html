@@ -49,6 +49,16 @@
             <label>Published:</label>
             <span th:text="${anew.pDate}">Publishing date</span>
             <br/>
+            <div th:if="${session.moderator}">
+                <form th:method="DELETE" th:action="@{/news/{id}(id=${anew.id})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+
+                <form th:method="GET" th:action="@{/news/{id}/modify(id=${anew.id})}">
+                    <input type="submit" value="Edit"/>
+                </form>
+            </div>
+
             <br/>
             <br/>
             <br/>

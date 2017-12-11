@@ -2,6 +2,7 @@ package newsite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.transaction.annotation.Transactional;
 import newsite.domain.Category;
 import newsite.repository.CategoryRepository;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Category Controller.
+ *
  * @author twviiala
  */
 @Transactional
@@ -31,12 +33,17 @@ public class CategoryController {
 
     /**
      * Add new Category.
+     *
      * @param redirectModel redirectmodel
      * @param name name
+     * @param session a
      * @return model
      */
     @PostMapping("/categories")
-    public String add(RedirectAttributes redirectModel, @RequestParam String name) {
+    public String add(HttpSession session, RedirectAttributes redirectModel, @RequestParam String name) {
+        if (session.getAttribute("moderator") == null) {
+            return "redirect:/";
+        }
         List<String> errors = categoryService.addCategory(name);
         if (!errors.isEmpty()) {
             redirectModel.addFlashAttribute("messages", errors);
@@ -51,12 +58,17 @@ public class CategoryController {
 
     /**
      * Delete parameter Category.
+     *
      * @param redirectModel r
      * @param id i
+     * @param session a
      * @return r
      */
     @DeleteMapping("/categories/{id}")
-    public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
+    public String delete(HttpSession session, RedirectAttributes redirectModel, @PathVariable Long id) {
+        if (session.getAttribute("moderator") == null) {
+            return "redirect:/";
+        }
         String name = categoryService.deleteCategory(id);
 
         List<String> messages = new ArrayList();
@@ -67,25 +79,35 @@ public class CategoryController {
 
     /**
      * Get modify category page.
+     *
      * @param model m
      * @param id i
+     * @param session a
      * @return r
      */
     @GetMapping("/categories/{id}/modify")
-    public String modify(Model model, @PathVariable Long id) {
+    public String modify(HttpSession session, Model model, @PathVariable Long id) {
+        if (session.getAttribute("moderator") == null) {
+            return "redirect:/";
+        }
         categoryService.setModifyModel(model, id);
         return "modifyCategory";
     }
 
     /**
      * Modify id category by changing the name to name.
+     *
      * @param redirectModel r
      * @param id i
      * @param name n
+     * @param session a
      * @return r
      */
     @PostMapping("/moderator/categories/{id}")
-    public String postModify(RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam String name) {
+    public String postModify(HttpSession session, RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam String name) {
+        if (session.getAttribute("moderator") == null) {
+            return "redirect:/";
+        }
         List<String> errors = categoryService.modifyCategory(name, id);
         if (!errors.isEmpty()) {
             redirectModel.addFlashAttribute("messages", errors);

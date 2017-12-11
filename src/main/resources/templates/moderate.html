@@ -20,135 +20,138 @@
                 <li th:each="message:${messages}" th:text="${message}"/>
             </ul>
         </div>
-        
+
         <div th:if="${session.moderator}">
 
-        <h2>Writers</h2>
+            <h2>Writers</h2>
 
-        <div>
-            <ol>
-                <li th:each="writer:${writers}">
-                    <span th:text="${writer.name}"/>
-                    <form th:method="DELETE" th:action="@{/writers/{id}(id=${writer.id})}">
-                        <input type="submit" value="Delete"/>
-                    </form>
+            <div>
+                <ol>
+                    <li th:each="writer:${writers}">
+                        <span th:text="${writer.name}"/>
+                        <form th:method="DELETE" th:action="@{/writers/{id}(id=${writer.id})}">
+                            <input type="submit" value="Delete"/>
+                        </form>
 
-                    <form th:method="GET" th:action="@{/writers/{id}/modify(id=${writer.id})}">
-                        <input type="submit" value="Edit"/>
-                    </form>
-                </li>
+                        <form th:method="GET" th:action="@{/writers/{id}/modify(id=${writer.id})}">
+                            <input type="submit" value="Edit"/>
+                        </form>
+                    </li>
 
-            </ol>
-        </div>
-
-
-        <h2>Add new writer</h2>
-
-        <form method="POST" th:action="@{/writers}">
-            <input type="text" name="name"/>
-            <input type="submit" value="Add"/>
-        </form>
-
-        <h2>Categories</h2>
-
-        <div>
-            <ol>
-                <li th:each="category:${categories}">
-                    <span th:text="${category.name}"/>
-                    <form th:method="DELETE" th:action="@{/categories/{id}(id=${category.id})}">
-                        <input type="submit" value="Delete"/>
-                    </form>
-
-                    <form th:method="GET" th:action="@{/categories/{id}/modify(id=${category.id})}">
-                        <input type="submit" value="Edit"/>
-                    </form>
-                </li>
-            </ol>
-        </div>
+                </ol>
+            </div>
 
 
-        <h2>Add new category</h2>
+            <h2>Add new writer</h2>
 
-        <form method="POST" th:action="@{/categories}">
-            <input type="text" name="name"/>
-            <input type="submit" value="Add"/>
-        </form>
+            <form method="POST" th:action="@{/writers}">
+                <input type="text" name="name"/>
+                <input type="submit" value="Add"/>
+            </form>
 
-        <h2>News articles</h2>
+            <h2>Categories</h2>
 
-        <div>
-            <ol>
-                <li th:each="anew:${news}">
-                    <label>Header:</label>
-                    <span  th:text="${anew.header}">Header</span>
-                    <br/>
-<!--                    <label>Writers:</label>
-                    <ul>
-                        <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
-                    </ul>
-                    <br/>
-                    <label>Categories:</label>
-                    <ul>
-                        <li th:each="category:${anew.categories}" th:text="${category.name}"></li>
-                    </ul>
-                    <br/>
-                    <label>Lead:</label>
-                    <span  th:text="${anew.lead}">Lead</span>
-                    <br/>
-                    <label>Photos:</label>
-                    <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="200"/>
-                    <br/>
-                    <label>Article text</label>
-                    <span  th:text="${anew.text}">text</span>
-                    <br/>
-                    <label>Published:</label>
-                    <span th:text="${anew.pDate}">Publishing date</span>-->
+            <div>
+                <ol>
+                    <li th:each="category:${categories}">
+                        <span th:text="${category.name}"/>
+                        <form th:method="DELETE" th:action="@{/categories/{id}(id=${category.id})}">
+                            <input type="submit" value="Delete"/>
+                        </form>
 
-                    <form th:method="DELETE" th:action="@{/news/{id}(id=${anew.id})}">
-                        <input type="submit" value="Delete"/>
-                    </form>
-
-                    <form th:method="GET" th:action="@{/news/{id}/modify(id=${anew.id})}">
-                        <input type="submit" value="Edit"/>
-                    </form>
-
-                </li>
-
-            </ol>
-        </div>
+                        <form th:method="GET" th:action="@{/categories/{id}/modify(id=${category.id})}">
+                            <input type="submit" value="Edit"/>
+                        </form>
+                    </li>
+                </ol>
+            </div>
 
 
-        <h2>Add new news</h2>
+            <h2>Add new category</h2>
 
-        <select name="writers" form="newNews" multiple="true">
-            <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">Writer</option>
-        </select>
-        <label>"Writer(s)"</label>
-        <br/>
+            <form method="POST" th:action="@{/categories}">
+                <input type="text" name="name"/>
+                <input type="submit" value="Add"/>
+            </form>
 
-        <select name="categories" form="newNews" multiple="true">
-            <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}">Category</option>
-        </select>
-        <label>Categories</label>
-        <br/>
-
-        <form method="POST" th:action="@{/news/moderate}" enctype="multipart/form-data" id="newNews">
-            <input type="text" name="header" placeholder="header"/>
-            <label>Header</label>
             <br/>
-            <input type="text" name="lead" placeholder="lead"/>
-            <label>Lead</label>
+            <h2>Add new news</h2>
+
+            <select name="writers" form="newNews" multiple="true">
+                <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">Writer</option>
+            </select>
+            <label>"Writer(s)"</label>
             <br/>
-            <textarea rows="10" cols="60" name="text"></textarea>
-            <label>Text</label>
+
+            <select name="categories" form="newNews" multiple="true">
+                <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}">Category</option>
+            </select>
+            <label>Categories</label>
             <br/>
-            <label>Photo</label>
-            <input type="file" name="photo" id="photo"/> 
+
+            <form method="POST" th:action="@{/news/moderate}" enctype="multipart/form-data" id="newNews">
+                <input type="text" name="header" placeholder="header"/>
+                <label>Header</label>
+                <br/>
+                <input type="text" name="lead" placeholder="lead"/>
+                <label>Lead</label>
+                <br/>
+                <textarea rows="10" cols="60" name="text"></textarea>
+                <label>Text</label>
+                <br/>
+                <label>Photo</label>
+                <input type="file" name="photo" id="photo"/> 
+                <br/>
+                <input type="submit" value="Add!"/>
+            </form>
             <br/>
-            <input type="submit" value="Add!"/>
-        </form>
-        <br/>
-        
+
+            <h2>News articles</h2>
+
+            <div>
+                <ol>
+                    <li th:each="anew:${news}">
+                        <label>Header:</label>
+                        <span  th:text="${anew.header}">Header</span>
+                        <br/>
+                        <!--                    <label>Writers:</label>
+                                            <ul>
+                                                <li th:each="writer:${anew.writers}" th:text="${writer.name}"></li>
+                                            </ul>
+                                            <br/>
+                                            <label>Categories:</label>
+                                            <ul>
+                                                <li th:each="category:${anew.categories}" th:text="${category.name}"></li>
+                                            </ul>
+                                            <br/>
+                                            <label>Lead:</label>
+                                            <span  th:text="${anew.lead}">Lead</span>
+                                            <br/>
+                                            <label>Photos:</label>
+                                            <img th:src="@{/news/{id}/photo(id=${anew.id})}" width="200"/>
+                                            <br/>
+                                            <label>Article text</label>
+                                            <span  th:text="${anew.text}">text</span>
+                                            <br/>
+                                            <label>Published:</label>
+                                            <span th:text="${anew.pDate}">Publishing date</span>-->
+
+                        <form th:method="DELETE" th:action="@{/news/{id}(id=${anew.id})}">
+                            <input type="submit" value="Delete"/>
+                        </form>
+
+                        <form th:method="GET" th:action="@{/news/{id}/modify(id=${anew.id})}">
+                            <input type="submit" value="Edit"/>
+                        </form>
+
+                    </li>
+
+                </ol>
+            </div>
+
+
+
+
         </div>
 
     </body>

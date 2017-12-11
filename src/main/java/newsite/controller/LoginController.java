@@ -3,15 +3,15 @@ package newsite.controller;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import newsite.domain.Moderator;
-import newsite.repository.ModeratorRepository;
 import newsite.service.LoginService;
+import newsite.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Login Controller.
@@ -22,54 +22,56 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private NewsService newsService;
 
     /**
      * Get login page.
      * @return a
      */
     @GetMapping("/login")
-    public String getLogin() {
+    public String getLogin(Model model) {
 
         loginService.createModerator();
-
+        newsService.addFooterHeaderData(model);
         return "login";
     }
 
     /**
      * Login to be able moderate news.
-     * @param model a
+     * @param redirectAttributes a
      * @param username a
      * @param password a
      * @param session a
      * @return a
      */
     @PostMapping("/login")
-    public String login(Model model, @RequestParam String username, @RequestParam String password, HttpSession session) {
+    public String login(RedirectAttributes redirectAttributes, @RequestParam String username, @RequestParam String password, HttpSession session) {
         List<String> messages = new ArrayList();
         if (loginService.attemptLogin(username, password, session)) {
             messages.add("Logged in! You can now add and edit news :)");
-            model.addAttribute("messages", messages);
-            return "login";
+            redirectAttributes.addFlashAttribute("messages", messages);
+            return "redirect:/login";
         }
 
         messages.add("Wrong username or password!");
-        model.addAttribute("messages", messages);
+        redirectAttributes.addFlashAttribute("messages", messages);
 
-        return "login";
+        return "redirect:/login";
     }
 
     /**
      * Logout.
-     * @param model a
+     * @param redirectAttributes a
      * @param session a
      * @return a
      */
     @GetMapping("/logout")
-    public String logout(Model model, HttpSession session) {
+    public String logout(RedirectAttributes redirectAttributes, HttpSession session) {
         List<String> messages = new ArrayList();
         session.setAttribute("moderator", null);
         messages.add("Logged out");
-        model.addAttribute("messages", messages);
-        return "login";
+        redirectAttributes.addFlashAttribute("messages", messages);
+        return "redirect:/login";
     }
 }
