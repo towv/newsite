@@ -46,7 +46,7 @@ public class ModeratorService {
 
     /**
      * Adds necessary items to model.
-     * @param model
+     * @param model a
      */
     public void setModelList(Model model) {
         model.addAttribute("news", newsRepository.findAll());
@@ -56,8 +56,8 @@ public class ModeratorService {
 
     /**
      * Adds necessary items to model to modify one article.
-     * @param model
-     * @param id
+     * @param model a
+     * @param id a
      */
     public void setModifyModel(Model model, Long id) {
         model.addAttribute("anew", newsRepository.getOne(id));
@@ -68,14 +68,14 @@ public class ModeratorService {
     /**
      * Adds a new News.
      * Otherwise if validators fail returns errors messages.
-     * @param header
-     * @param lead
-     * @param text
-     * @param writers
-     * @param categories
-     * @param photo
-     * @return
-     * @throws IOException
+     * @param header a
+     * @param lead a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @param photo a
+     * @return a
+     * @throws IOException a
      */
     public List<String> addNews(String header, String lead, String text, List<Long> writers, List<Long> categories, MultipartFile photo) throws IOException {
         List<String> errors = newsValidator.validateNews(header, lead, text, writers, categories, photo, categoryRepository, writerRepository, photoRepository);
@@ -102,15 +102,15 @@ public class ModeratorService {
 
     /**
      * Modifies News item.
-     * @param id
-     * @param header
-     * @param lead
-     * @param photo
-     * @param text
-     * @param writers
-     * @param categories
-     * @return
-     * @throws IOException
+     * @param id a
+     * @param header a
+     * @param lead a
+     * @param photo a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @return a
+     * @throws IOException a
      */
     public List<String> modifyNews(Long id, String header, String lead, MultipartFile photo, String text, List<Long> writers, List<Long> categories) throws IOException {
         List<String> errors = newsValidator.validateEditNews(header, lead, text, writers, categories);
@@ -135,8 +135,8 @@ public class ModeratorService {
 
     /**
      * Deletes a news item.
-     * @param id
-     * @return
+     * @param id a
+     * @return a
      */
     public String deleteNews(Long id) {
         News anew = newsRepository.getOne(id);
@@ -152,8 +152,8 @@ public class ModeratorService {
 
     /**
      * Adds a writer or writers to a news item.
-     * @param writers
-     * @param news
+     * @param writers a
+     * @param news a
      */
     public void addWriterToNews(List<Long> writers, News news) {
         for (Long longWriter : writers) {
@@ -166,8 +166,8 @@ public class ModeratorService {
 
     /**
      * Adds a category or categories to a news item.
-     * @param categories
-     * @param news
+     * @param categories a
+     * @param news a
      */
     public void addCategoryToNews(List<Long> categories, News news) {
         for (Long longCategory : categories) {

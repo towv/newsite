@@ -28,8 +28,8 @@ public class CategoryService {
     
     /**
      * Sets the modify model.
-     * @param model
-     * @param id
+     * @param model a
+     * @param id a
      */
     public void setModifyModel(Model model, Long id) {
         model.addAttribute("category", categoryRepository.getOne(id));
@@ -38,8 +38,8 @@ public class CategoryService {
     /**
      * Adds a new category if validators pass.
      * Otherwise returns error messages.
-     * @param name
-     * @return
+     * @param name a 
+     * @return a
      */
     public List<String> addCategory(String name) {
         List<String> errors = categoryValidator.validateCategories(name, categoryRepository);
@@ -57,9 +57,9 @@ public class CategoryService {
     /**
      * Modifies category.
      * Otherwise returns error messages.
-     * @param name
-     * @param id
-     * @return
+     * @param name a
+     * @param id a
+     * @return a
      */
     public List<String> modifyCategory(String name, Long id) {
         List<String> errors = categoryValidator.validateCategories(name, categoryRepository);
@@ -75,8 +75,8 @@ public class CategoryService {
 
     /**
      * Deletes as category.
-     * @param id
-     * @return
+     * @param id a 
+     * @return a
      */
     public String deleteCategory(Long id) {
         Category category = categoryRepository.getOne(id);
@@ -87,7 +87,7 @@ public class CategoryService {
 
     /**
      * Removes News from categories when the News is deleted.
-     * @param anew
+     * @param anew a
      */
     public void removeNewsFromCategories(News anew) {
         for (Category cy : anew.getCategories()) {
@@ -101,8 +101,8 @@ public class CategoryService {
 
     /**
      * Adds categories to news and visa versa.
-     * @param anew
-     * @param categories
+     * @param anew a
+     * @param categories a
      */
     public void setCategoriesToNews(News anew, List<Long> categories) {
         anew.setCategories(new ArrayList<>());
@@ -116,7 +116,7 @@ public class CategoryService {
 
     /**
      * Removes categories from a single News.
-     * @param category
+     * @param category a
      */
     public void removeCategoriesFromaNew(Category category) {
         for (News anew : category.getNews()) {

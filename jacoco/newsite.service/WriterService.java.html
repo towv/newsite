@@ -28,8 +28,8 @@ import org.springframework.ui.Model;
     
     /**
      * Sets the model for modify writer.
-     * @param model
-     * @param id
+     * @param model a
+     * @param id a
      */
     public void setModifyModel(Model model, Long id) {
 <span class="fc" id="L35">        model.addAttribute(&quot;writer&quot;, writerRepository.getOne(id));</span>
@@ -37,8 +37,8 @@ import org.springframework.ui.Model;
 
     /**
      * Adds a new writer.
-     * @param name
-     * @return
+     * @param name a
+     * @return a
      */
     public List&lt;String&gt; addWriter(String name) {
 <span class="fc" id="L44">        List&lt;String&gt; errors = writerValidator.validateWriter(name, writerRepository);</span>
@@ -55,9 +55,9 @@ import org.springframework.ui.Model;
 
     /**
      * Modifies an existing writer.
-     * @param name
-     * @param id
-     * @return
+     * @param name a
+     * @param id a
+     * @return a
      */
     public List&lt;String&gt; modifyWriter(String name, Long id) {
 <span class="fc" id="L63">        List&lt;String&gt; errors = writerValidator.validateWriter(name, writerRepository);</span>
@@ -74,8 +74,8 @@ import org.springframework.ui.Model;
 
     /**
      * Deletes an existing writer.
-     * @param id
-     * @return
+     * @param id a
+     * @return a
      */
     public String deleteWriter(Long id) {
 <span class="fc" id="L81">        Writer writer = writerRepository.getOne(id);</span>
@@ -86,7 +86,7 @@ import org.springframework.ui.Model;
 
     /**
      * Removes news from writers.
-     * @param anew
+     * @param anew a
      */
     public void removeNewsFromWriters(News anew) {
 <span class="fc bfc" id="L92" title="All 2 branches covered.">        for (Writer wr : anew.getWriters()) {</span>
@@ -100,8 +100,8 @@ import org.springframework.ui.Model;
 
     /**
      * Sets writers to news.
-     * @param anew
-     * @param writers
+     * @param anew A
+     * @param writers A
      */
     public void setWritersToNews(News anew, List&lt;Long&gt; writers) {
 <span class="fc" id="L107">        anew.setWriters(new ArrayList&lt;&gt;());</span>
@@ -115,7 +115,7 @@ import org.springframework.ui.Model;
 
     /**
      * Removes writes from a news article.
-     * @param writer
+     * @param writer a
      */
     public void removeWritersFromaNew(Writer writer) {
 <span class="pc bpc" id="L121" title="1 of 2 branches missed.">        for (News anew : writer.getNews()) {</span>

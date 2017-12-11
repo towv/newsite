@@ -2,7 +2,7 @@ package newsite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import newsite.domain.Writer;
 import newsite.repository.NewsRepository;
 import newsite.repository.WriterRepository;
@@ -31,9 +31,9 @@ public class WriterController {
     
     /**
      * Add a new writer.
-     * @param redirectModel
-     * @param name
-     * @return
+     * @param redirectModel a
+     * @param name a
+     * @return a
      */
     @PostMapping("/writers")
     public String add(RedirectAttributes redirectModel, @RequestParam String name) {
@@ -53,9 +53,9 @@ public class WriterController {
     
     /**
      * Delete parameter id Writer.
-     * @param redirectModel
-     * @param id
-     * @return
+     * @param redirectModel a
+     * @param id a
+     * @return a
      */
     @DeleteMapping("/writers/{id}")
     public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
@@ -70,9 +70,9 @@ public class WriterController {
     
     /**
      * Get modifyWriter page.
-     * @param model
-     * @param id
-     * @return
+     * @param model a
+     * @param id a
+     * @return a
      */
     @GetMapping("/writers/{id}/modify")
     public String modify(Model model, @PathVariable Long id) {
@@ -82,10 +82,10 @@ public class WriterController {
     
     /**
      * Modify parameter id Writer.
-     * @param redirectModel
-     * @param id
-     * @param name
-     * @return
+     * @param redirectModel a
+     * @param id a
+     * @param name a
+     * @return a
      */
     @PostMapping("/moderator/writers/{id}")
     public String postModify(RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam String name) {

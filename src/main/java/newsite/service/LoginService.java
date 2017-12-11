@@ -34,10 +34,10 @@ public class LoginService {
 
     /**
      *
-     * @param username
-     * @param password
-     * @param session
-     * @return
+     * @param username a
+     * @param password a
+     * @param session a
+     * @return a
      */
     public boolean attemptLogin(String username, String password, HttpSession session) {
         Moderator moderator = moderatorRepository.findByName(username);

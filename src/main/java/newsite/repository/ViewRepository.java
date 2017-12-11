@@ -15,9 +15,9 @@ public interface ViewRepository extends JpaRepository<View, Long> {
     
     /**
      * Finds all views related to certain News and created after the Date.
-     * @param news
-     * @param date
-     * @return
+     * @param news a
+     * @param date a
+     * @return a
      */
     List<View> findByNewsAndWhenViewedAfter(News news, Date date);
     

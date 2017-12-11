@@ -33,7 +33,7 @@ public class NewsValidatorTest {
 
         errors = newsValidator.validateHeader(errors, "TooLongStringlalalalalalalalalalalalalalalala"
                 + "lalalalalalalalalalalalalalaa");
-        assertEquals(errors.get(1), "The header is too long, max 60 characters.");
+        assertEquals(errors.get(1), "The header is too long, max 50 characters.");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class NewsValidatorTest {
 
         errors = newsValidator.validateLead(errors, "TooLongStringlalalalalalalalalalalalalalalalala"
                 + "lalalalalalalalalalalalalaa");
-        assertEquals(errors.get(1), "The lead is too long, max 60 characters.");
+        assertEquals(errors.get(1), "The lead is too long, max 50 characters.");
     }
 
     @Test
@@ -60,7 +60,7 @@ public class NewsValidatorTest {
                 + "lalalalalalalalalalalaaTooLongStringlalalalalalalalalalalalalalalalalalalalalala"
                 + "lalalalalalalalaaTooLongStringlalalalalalalalalalalalalalalalalalalalalalalalala"
                 + "lalalalalaaTooLongStringlalalalalalalalalalalalalalalalalalalalalalalalalalalalalalaa");
-        assertEquals(errors.get(1), "The text is too long, max 60 characters.");
+        assertEquals(errors.get(1), "The text is too long, max 255 characters.");
     }
 
     @Test

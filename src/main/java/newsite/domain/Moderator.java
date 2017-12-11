@@ -22,7 +22,7 @@ public class Moderator extends AbstractPersistable<Long> {
     
     /**
      *
-     * @param moderator
+     * @param moderator a
      */
     public void theModerator(Moderator moderator) {
         moderator.setName("moderator");

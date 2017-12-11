@@ -1,6 +1,6 @@
 package newsite.controller;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import newsite.repository.NewsRepository;
 import newsite.repository.PhotoRepository;
 import newsite.service.PhotoService;
@@ -23,8 +23,8 @@ public class PhotoController {
 
     /**
      * Returns the photo related to the id news.
-     * @param id
-     * @return
+     * @param id a
+     * @return a
      */
     @GetMapping(path = "/news/{id}/photo", produces = "image/jpeg")
     @ResponseBody

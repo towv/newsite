@@ -3,7 +3,7 @@ package newsite.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import newsite.repository.CategoryRepository;
 import newsite.repository.NewsRepository;
 import newsite.repository.PhotoRepository;
@@ -39,8 +39,8 @@ public class ModeratorController {
 
     /**
      * Get moderate page.
-     * @param model
-     * @return
+     * @param model a
+     * @return a
      */
     @GetMapping("/moderate")
     public String list(Model model) {
@@ -50,15 +50,15 @@ public class ModeratorController {
 
     /**
      * Add new News.
-     * @param redirectModel
-     * @param header
-     * @param lead
-     * @param text
-     * @param writers
-     * @param categories
-     * @param photo
-     * @return
-     * @throws IOException
+     * @param redirectModel a
+     * @param header a
+     * @param lead a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @param photo a 
+     * @return a
+     * @throws IOException a
      */
     @PostMapping("/news/moderate")
     public String postAdd(RedirectAttributes redirectModel, @RequestParam(value = "header", required = false) String header, @RequestParam(value = "lead", required = false) String lead,
@@ -80,9 +80,9 @@ public class ModeratorController {
 
     /**
      * Delete parameter News.
-     * @param redirectModel
-     * @param id
-     * @return
+     * @param redirectModel a
+     * @param id a
+     * @return a
      */
     @DeleteMapping("/news/{id}")
     public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
@@ -97,9 +97,9 @@ public class ModeratorController {
 
     /**
      * Get modifying page, parameter id News.
-     * @param model
-     * @param id
-     * @return
+     * @param model a
+     * @param id a
+     * @return a
      */
     @GetMapping("/news/{id}/modify")
     public String modify(Model model, @PathVariable Long id) {
@@ -109,16 +109,16 @@ public class ModeratorController {
 
     /**
      * Modify parameter id news with other parameters.
-     * @param redirectModel
-     * @param id
-     * @param header
-     * @param lead
-     * @param text
-     * @param writers
-     * @param categories
-     * @param photo
-     * @return
-     * @throws IOException
+     * @param redirectModel a
+     * @param id a
+     * @param header a
+     * @param lead a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @param photo a
+     * @return a
+     * @throws IOException a
      */
     @PostMapping("/moderator/news/{id}")
     public String postModify(RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam(value = "header", required = false) String header, @RequestParam(value = "lead", required = false) String lead,

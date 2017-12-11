@@ -20,16 +20,16 @@ import newsite.repository.WriterRepository;
      * Makes sure there are not too many writers. There can be.
      * Makes sure that new writer is not created if an old one with the same name already exists.
      * Checks the length of the writer name.
-     * @param name
-     * @param writerRepository
-     * @return
+     * @param name a
+     * @param writerRepository a
+     * @return a
      */
     public List&lt;String&gt; validateWriter(String name, WriterRepository writerRepository) {
 <span class="fc" id="L28">        this.writerRepository = writerRepository;</span>
 <span class="fc" id="L29">        List&lt;String&gt; errors = new ArrayList();</span>
 
 <span class="fc" id="L31">        List&lt;Writer&gt; writers = writerRepository.findAll();</span>
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (writers.size() &gt; 7) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (writers.size() &gt; 20) {</span>
 <span class="nc" id="L33">            errors.add(&quot;The maximum number of writers is 20, delete a writer to create a new one.&quot;);</span>
         }
 <span class="pc bpc" id="L35" title="2 of 4 branches missed.">        if (name.trim().isEmpty() || name == null) {</span>
@@ -41,7 +41,7 @@ import newsite.repository.WriterRepository;
             }
 <span class="nc" id="L42">        } catch (Exception e) {</span>
 <span class="fc" id="L43">        }</span>
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (name.length() &gt; 15) {</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (name.length() &gt; 30) {</span>
 <span class="nc" id="L45">            errors.add(&quot;Maximum length for writer name is 30 characters.&quot;);</span>
         }
 <span class="fc" id="L47">        return errors;</span>

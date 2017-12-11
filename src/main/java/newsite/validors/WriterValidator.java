@@ -20,16 +20,16 @@ public class WriterValidator {
      * Makes sure there are not too many writers. There can be.
      * Makes sure that new writer is not created if an old one with the same name already exists.
      * Checks the length of the writer name.
-     * @param name
-     * @param writerRepository
-     * @return
+     * @param name a
+     * @param writerRepository a
+     * @return a
      */
     public List<String> validateWriter(String name, WriterRepository writerRepository) {
         this.writerRepository = writerRepository;
         List<String> errors = new ArrayList();
 
         List<Writer> writers = writerRepository.findAll();
-        if (writers.size() > 7) {
+        if (writers.size() > 20) {
             errors.add("The maximum number of writers is 20, delete a writer to create a new one.");
         }
         if (name.trim().isEmpty() || name == null) {
@@ -41,7 +41,7 @@ public class WriterValidator {
             }
         } catch (Exception e) {
         }
-        if (name.length() > 15) {
+        if (name.length() > 30) {
             errors.add("Maximum length for writer name is 30 characters.");
         }
         return errors;

@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
 
     <parent>
@@ -93,19 +94,44 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.7.9</version>
         </dependency>
+        
+        <!-- Javadoc -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.0</version>
+            <type>maven-plugin</type>
+        </dependency>
     </dependencies>
 
+
     <build>
+        
         <plugins>
+            
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+            </plugin>
+            
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.9</version>
+                <configuration>
+                    <excludes>
+                        <exclude>newsite/controller/**/*</exclude>
+                        <exclude>newsite/domain/**/*</exclude>
+                        <exclude>newsite/repository/**/*</exclude>
+                        <exclude>newsite/ProductionConfiguration.java</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>

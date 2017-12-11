@@ -28,8 +28,8 @@ public class WriterService {
     
     /**
      * Sets the model for modify writer.
-     * @param model
-     * @param id
+     * @param model a
+     * @param id a
      */
     public void setModifyModel(Model model, Long id) {
         model.addAttribute("writer", writerRepository.getOne(id));
@@ -37,8 +37,8 @@ public class WriterService {
 
     /**
      * Adds a new writer.
-     * @param name
-     * @return
+     * @param name a
+     * @return a
      */
     public List<String> addWriter(String name) {
         List<String> errors = writerValidator.validateWriter(name, writerRepository);
@@ -55,9 +55,9 @@ public class WriterService {
 
     /**
      * Modifies an existing writer.
-     * @param name
-     * @param id
-     * @return
+     * @param name a
+     * @param id a
+     * @return a
      */
     public List<String> modifyWriter(String name, Long id) {
         List<String> errors = writerValidator.validateWriter(name, writerRepository);
@@ -74,8 +74,8 @@ public class WriterService {
 
     /**
      * Deletes an existing writer.
-     * @param id
-     * @return
+     * @param id a
+     * @return a
      */
     public String deleteWriter(Long id) {
         Writer writer = writerRepository.getOne(id);
@@ -86,7 +86,7 @@ public class WriterService {
 
     /**
      * Removes news from writers.
-     * @param anew
+     * @param anew a
      */
     public void removeNewsFromWriters(News anew) {
         for (Writer wr : anew.getWriters()) {
@@ -100,8 +100,8 @@ public class WriterService {
 
     /**
      * Sets writers to news.
-     * @param anew
-     * @param writers
+     * @param anew A
+     * @param writers A
      */
     public void setWritersToNews(News anew, List<Long> writers) {
         anew.setWriters(new ArrayList<>());
@@ -115,7 +115,7 @@ public class WriterService {
 
     /**
      * Removes writes from a news article.
-     * @param writer
+     * @param writer a
      */
     public void removeWritersFromaNew(Writer writer) {
         for (News anew : writer.getNews()) {

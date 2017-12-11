@@ -14,7 +14,9 @@ import newsite.repository.ViewRepository;
 import newsite.repository.WriterRepository;
 import newssite.ModelStub;
 import newssite.MultipartFileStub;
+import newssite.RedirectAttributesStub;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -43,10 +46,12 @@ public class NewsServiceTest {
 
     private MultipartFileStub photo;
     private ModelStub model;
+    private RedirectAttributes redirectAttributes;
 
     @Before
     public void setUp() {
         this.model = new ModelStub();
+        this.redirectAttributes = new RedirectAttributesStub();
         this.photo = new MultipartFileStub("photo", "photo.jpg", "image/jpg", 2L, new byte[10]);
 
         Writer writer = new Writer();
@@ -115,6 +120,18 @@ public class NewsServiceTest {
         assertTrue(this.model.containsAttribute("categories"));
         assertTrue(this.model.containsAttribute("newsByDate"));
         assertTrue(this.model.containsAttribute("newsByViews"));
+        
+    }
+    
+    @Test
+    public void testSearch() {
+        
+        newsService.search(this.redirectAttributes, "eiole");
+        assertFalse(this.redirectAttributes.containsAttribute("news"));
+        assertTrue(this.redirectAttributes.containsAttribute("messages"));
+        newsService.search(this.redirectAttributes, "header");
+        assertTrue(this.redirectAttributes.containsAttribute("news"));
+        assertTrue(this.redirectAttributes.containsAttribute("messages"));
         
     }
 

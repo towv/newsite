@@ -25,8 +25,8 @@ public class PhotoService {
     
     /**
      * Returns the photo that is linked to id news.
-     * @param id
-     * @return
+     * @param id a
+     * @return a
      */
     public byte[] getPhoto(Long id) {
         return photoRepository.findByNews(newsRepository.getOne(id)).getContent();
@@ -34,9 +34,9 @@ public class PhotoService {
 
     /**
      * Change the photo related to a News article.
-     * @param photo
-     * @param anew
-     * @throws IOException
+     * @param photo a
+     * @param anew a
+     * @throws IOException a
      */
     public void changePhoto(MultipartFile photo, News anew) throws IOException {
         if (photo != null && !photo.isEmpty()) {
@@ -56,9 +56,9 @@ public class PhotoService {
     
     /**
      * Creates a photo for a news article.
-     * @param photo
-     * @param news
-     * @throws IOException
+     * @param photo a
+     * @param news a
+     * @throws IOException a
      */
     public void createPhoto(MultipartFile photo, News news) throws IOException  {
         if (photo.getContentType().equals("image/jpeg")) {

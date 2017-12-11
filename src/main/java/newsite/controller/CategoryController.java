@@ -2,7 +2,7 @@ package newsite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import newsite.domain.Category;
 import newsite.repository.CategoryRepository;
 import newsite.repository.NewsRepository;
@@ -31,9 +31,9 @@ public class CategoryController {
 
     /**
      * Add new Category.
-     * @param redirectModel
-     * @param name
-     * @return
+     * @param redirectModel redirectmodel
+     * @param name name
+     * @return model
      */
     @PostMapping("/categories")
     public String add(RedirectAttributes redirectModel, @RequestParam String name) {
@@ -51,9 +51,9 @@ public class CategoryController {
 
     /**
      * Delete parameter Category.
-     * @param redirectModel
-     * @param id
-     * @return
+     * @param redirectModel r
+     * @param id i
+     * @return r
      */
     @DeleteMapping("/categories/{id}")
     public String delete(RedirectAttributes redirectModel, @PathVariable Long id) {
@@ -67,9 +67,9 @@ public class CategoryController {
 
     /**
      * Get modify category page.
-     * @param model
-     * @param id
-     * @return
+     * @param model m
+     * @param id i
+     * @return r
      */
     @GetMapping("/categories/{id}/modify")
     public String modify(Model model, @PathVariable Long id) {
@@ -79,10 +79,10 @@ public class CategoryController {
 
     /**
      * Modify id category by changing the name to name.
-     * @param redirectModel
-     * @param id
-     * @param name
-     * @return
+     * @param redirectModel r
+     * @param id i
+     * @param name n
+     * @return r
      */
     @PostMapping("/moderator/categories/{id}")
     public String postModify(RedirectAttributes redirectModel, @PathVariable Long id, @RequestParam String name) {

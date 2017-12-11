@@ -12,38 +12,51 @@ import org.springframework.stereotype.Repository;
 
 /**
  * News repository.
+ *
  * @author twviiala
  */
 public interface NewsRepository extends JpaRepository<News, Long> {
 
     /**
      * Find News based on Category.
-     * @param categories
-     * @return
+     *
+     * @param categories a
+     * @return a
      */
     List<News> findByCategories(List<Category> categories);
 
     /**
      * Find News based on Category and amount of Views.
-     * @param categories
-     * @param pageable
-     * @return
+     *
+     * @param categories a
+     * @param pageable a
+     * @return a
      */
     List<News> findByCategoriesAndViews(List<Category> categories, Pageable pageable);
 
     /**
      * Find News based on Category and pageable.
-     * @param categories
-     * @param pageable
-     * @return
+     *
+     * @param categories a
+     * @param pageable a
+     * @return a
      */
     List<News> findByCategories(List<Category> categories, Pageable pageable);
-    
+
     /**
      * Find News based on header.
-     * @param header
-     * @return
+     *
+     * @param header a
+     * @return a
      */
     News findByHeader(String header);
+
+    /**
+     * Find news with searchWord
+     *
+     * @param searchWord a
+     * @return a
+     */
+    List<News> findByHeaderContainingIgnoreCase(String searchWord);
 
 }

@@ -12,8 +12,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     /**
      * Find based on category name.
-     * @param name
-     * @return
+     * @param name a
+     * @return a
      */
     Category findByName(String name);
 }

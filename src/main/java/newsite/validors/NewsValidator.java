@@ -23,16 +23,16 @@ public class NewsValidator {
     /**
      * Runs all news related validators in one method.
      * 
-     * @param header
-     * @param lead
-     * @param text
-     * @param writers
-     * @param categories
-     * @param photo
-     * @param categoryRepository
-     * @param writerRepository
-     * @param photoRepository
-     * @return
+     * @param header a
+     * @param lead a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @param photo a
+     * @param categoryRepository a
+     * @param writerRepository a
+     * @param photoRepository a 
+     * @return a
      */
 
     public List<String> validateNews(String header, String lead,
@@ -56,12 +56,12 @@ public class NewsValidator {
     /**
      * Validates news editing, the difference being no photo validator.
      * You might want to keep the old photo.
-     * @param header
-     * @param lead
-     * @param text
-     * @param writers
-     * @param categories
-     * @return
+     * @param header a
+     * @param lead a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @return a
      */
     public List<String> validateEditNews(String header, String lead,
             String text, List<Long> writers, List<Long> categories) {
@@ -78,13 +78,13 @@ public class NewsValidator {
     /**
      * Validates header.
      * The length of it.
-     * @param errors
-     * @param header
-     * @return
+     * @param errors a
+     * @param header a
+     * @return a
      */
     public List<String> validateHeader(List<String> errors, String header) {
         if (header.length() > 50) {
-            errors.add("The header is too long, max 60 characters.");
+            errors.add("The header is too long, max 50 characters.");
         }
         if (header.length() < 3) {
             errors.add("The header is too short, minimum 3 characters");
@@ -95,14 +95,14 @@ public class NewsValidator {
     /**
      * Validates lead.
      * The length of it.
-     * @param errors
-     * @param lead
-     * @return
+     * @param errors a
+     * @param lead a
+     * @return a
      */
     public List<String> validateLead(List<String> errors, String lead) {
 
         if (lead.length() > 50) {
-            errors.add("The lead is too long, max 60 characters.");
+            errors.add("The lead is too long, max 50 characters.");
         }
         if (lead.length() < 3) {
             errors.add("The lead is too short, minimum 3 characters");
@@ -113,16 +113,16 @@ public class NewsValidator {
     /**
      * Validates text.
      * The length of it.
-     * @param errors
-     * @param text
-     * @return
+     * @param errors a
+     * @param text a
+     * @return a
      */
     public List<String> validateText(List<String> errors, String text) {
 
         if (text.length() > 255) {
-            errors.add("The text is too long, max 60 characters.");
+            errors.add("The text is too long, max 255 characters.");
         }
-        if (text.length() < 5) {
+        if (text.length() < 3) {
             errors.add("The text is too short, minimum 3 characters");
         }
         return errors;
@@ -131,9 +131,9 @@ public class NewsValidator {
     /**
      * Validates photo.
      * All attributes.
-     * @param errors
-     * @param photo
-     * @return
+     * @param errors a
+     * @param photo a
+     * @return a
      */
     public List<String> validatePhoto(List<String> errors, MultipartFile photo) {
 
@@ -156,9 +156,9 @@ public class NewsValidator {
     /**
      * Validates categories.
      * You need to have one when creating news.
-     * @param errors
-     * @param categories
-     * @return
+     * @param errors a
+     * @param categories a
+     * @return a
      */
     public List<String> validateCategories(List<String> errors, List<Long> categories) {
         try {
@@ -184,9 +184,9 @@ public class NewsValidator {
     /**
      * Validates writers.
      * News are written by someone.
-     * @param errors
-     * @param writers
-     * @return
+     * @param errors a
+     * @param writers a
+     * @return a
      */
     public List<String> validateWriters(List<String> errors, List<Long> writers) {
 

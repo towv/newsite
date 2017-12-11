@@ -25,7 +25,7 @@ public class LoginController {
 
     /**
      * Get login page.
-     * @return
+     * @return a
      */
     @GetMapping("/login")
     public String getLogin() {
@@ -37,11 +37,11 @@ public class LoginController {
 
     /**
      * Login to be able moderate news.
-     * @param model
-     * @param username
-     * @param password
-     * @param session
-     * @return
+     * @param model a
+     * @param username a
+     * @param password a
+     * @param session a
+     * @return a
      */
     @PostMapping("/login")
     public String login(Model model, @RequestParam String username, @RequestParam String password, HttpSession session) {
@@ -60,9 +60,9 @@ public class LoginController {
 
     /**
      * Logout.
-     * @param model
-     * @param session
-     * @return
+     * @param model a
+     * @param session a
+     * @return a
      */
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session) {

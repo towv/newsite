@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import newsite.domain.Category;
 import newsite.domain.News;
 import newsite.repository.CategoryRepository;
@@ -37,8 +37,8 @@ public class NewsController {
 
     /**
      * Return index page.
-     * @param model
-     * @return
+     * @param model a
+     * @return a
      */
     @GetMapping("/")
     public String index(Model model) {
@@ -48,9 +48,9 @@ public class NewsController {
 
     /**
      * Return a single news in detail.
-     * @param model
-     * @param id
-     * @return
+     * @param model a
+     * @param id a
+     * @return a
      */
     @GetMapping("/news/{id}")
     public String article(Model model, @PathVariable Long id) {
@@ -60,10 +60,10 @@ public class NewsController {
 
     /**
      * List news based on publishing date.
-     * @param model
-     * @param title
-     * @param index
-     * @return
+     * @param model a
+     * @param title a
+     * @param index a
+     * @return a
      */
     @GetMapping("/news/{title}/listByDate/{index}")
     public String listByDate(Model model, @PathVariable String title, @PathVariable Integer index) {
@@ -73,10 +73,10 @@ public class NewsController {
 
     /**
      * List news based on views last week.
-     * @param model
-     * @param title
-     * @param index
-     * @return
+     * @param model a
+     * @param title a
+     * @param index a
+     * @return a
      */
     @GetMapping("/news/{title}/listByViews/{index}")
     public String listByViews(Model model, @PathVariable String title, @PathVariable Integer index) {

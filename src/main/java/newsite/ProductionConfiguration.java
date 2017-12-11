@@ -17,7 +17,7 @@ public class ProductionConfiguration {
 
     /**
      * Production configuration.
-     * @return
+     * @return dsb.
      */
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")

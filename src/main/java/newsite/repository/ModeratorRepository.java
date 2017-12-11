@@ -11,8 +11,8 @@ public interface ModeratorRepository extends JpaRepository<Moderator, Long> {
 
     /**
      * Find based on moderator name.
-     * @param username
-     * @return
+     * @param username a
+     * @return a
      */
     public Moderator findByName(String username);
 

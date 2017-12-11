@@ -17,9 +17,9 @@ public class CategoryValidator {
      * Makes sure there are not too many categories to make a mess of the site.
      * Makes sure that new category is not created if an old one with the same name already exists.
      * Checks the length of the category name.
-     * @param name
-     * @param categoryRepository
-     * @return
+     * @param name a
+     * @param categoryRepository a
+     * @return a
      */
     public List<String> validateCategories(String name, CategoryRepository categoryRepository) {
         List<String> errors = new ArrayList();

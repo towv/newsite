@@ -13,8 +13,8 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
     /**
      * Find photo by News.
-     * @param news
-     * @return
+     * @param news a
+     * @return a
      */
     Photo findByNews(News news);
 }

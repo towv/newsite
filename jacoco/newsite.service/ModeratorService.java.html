@@ -46,7 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 
     /**
      * Adds necessary items to model.
-     * @param model
+     * @param model a
      */
     public void setModelList(Model model) {
 <span class="fc" id="L52">        model.addAttribute(&quot;news&quot;, newsRepository.findAll());</span>
@@ -56,8 +56,8 @@ import org.springframework.web.multipart.MultipartFile;
 
     /**
      * Adds necessary items to model to modify one article.
-     * @param model
-     * @param id
+     * @param model a
+     * @param id a
      */
     public void setModifyModel(Model model, Long id) {
 <span class="fc" id="L63">        model.addAttribute(&quot;anew&quot;, newsRepository.getOne(id));</span>
@@ -68,14 +68,14 @@ import org.springframework.web.multipart.MultipartFile;
     /**
      * Adds a new News.
      * Otherwise if validators fail returns errors messages.
-     * @param header
-     * @param lead
-     * @param text
-     * @param writers
-     * @param categories
-     * @param photo
-     * @return
-     * @throws IOException
+     * @param header a
+     * @param lead a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @param photo a
+     * @return a
+     * @throws IOException a
      */
     public List&lt;String&gt; addNews(String header, String lead, String text, List&lt;Long&gt; writers, List&lt;Long&gt; categories, MultipartFile photo) throws IOException {
 <span class="fc" id="L81">        List&lt;String&gt; errors = newsValidator.validateNews(header, lead, text, writers, categories, photo, categoryRepository, writerRepository, photoRepository);</span>
@@ -102,15 +102,15 @@ import org.springframework.web.multipart.MultipartFile;
 
     /**
      * Modifies News item.
-     * @param id
-     * @param header
-     * @param lead
-     * @param photo
-     * @param text
-     * @param writers
-     * @param categories
-     * @return
-     * @throws IOException
+     * @param id a
+     * @param header a
+     * @param lead a
+     * @param photo a
+     * @param text a
+     * @param writers a
+     * @param categories a
+     * @return a
+     * @throws IOException a
      */
     public List&lt;String&gt; modifyNews(Long id, String header, String lead, MultipartFile photo, String text, List&lt;Long&gt; writers, List&lt;Long&gt; categories) throws IOException {
 <span class="fc" id="L116">        List&lt;String&gt; errors = newsValidator.validateEditNews(header, lead, text, writers, categories);</span>
@@ -135,8 +135,8 @@ import org.springframework.web.multipart.MultipartFile;
 
     /**
      * Deletes a news item.
-     * @param id
-     * @return
+     * @param id a
+     * @return a
      */
     public String deleteNews(Long id) {
 <span class="fc" id="L142">        News anew = newsRepository.getOne(id);</span>
@@ -152,8 +152,8 @@ import org.springframework.web.multipart.MultipartFile;
 
     /**
      * Adds a writer or writers to a news item.
-     * @param writers
-     * @param news
+     * @param writers a
+     * @param news a
      */
     public void addWriterToNews(List&lt;Long&gt; writers, News news) {
 <span class="fc bfc" id="L159" title="All 2 branches covered.">        for (Long longWriter : writers) {</span>
@@ -166,8 +166,8 @@ import org.springframework.web.multipart.MultipartFile;
 
     /**
      * Adds a category or categories to a news item.
-     * @param categories
-     * @param news
+     * @param categories a
+     * @param news a
      */
     public void addCategoryToNews(List&lt;Long&gt; categories, News news) {
 <span class="fc bfc" id="L173" title="All 2 branches covered.">        for (Long longCategory : categories) {</span>

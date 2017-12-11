@@ -11,8 +11,8 @@ public interface WriterRepository extends JpaRepository<Writer, Long> {
 
     /**
      * Finds writer by writer name.
-     * @param name
-     * @return
+     * @param name a
+     * @return a
      */
     Writer findByName(String name);
 }
